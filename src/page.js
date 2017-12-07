@@ -8,15 +8,40 @@ requirejs.config({
 
 requirejs(['react', 'react-dom'], function(React, ReactDOM) {
 
+
+    let producers = {
+            grandmaAmount: 0,
+            grandmaCost: 0,
+            mineAmount: 0,
+            mineCost: 0,
+            farmAmount: 0,
+            farmCost: 0
+
+    }
 class CookiesClicker extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+                amount: 0,
+                perSecond : 0
+            }
+        
+    }
+    componentDidMount() {
+        this.intervalId = setInterval(() => this.setState({amount: this.state.amount +1}), 1000)
+        this.intervalSec = setInterval(() => getCookies(), 1000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
+        clearInterval(this.intervalSec);
+      }
+
     render() {
-        let cookies = {
-            amount: 0,
-            perSecond : 0
-        }
         return (
             <div>
             <ProducerList />
+            <ProducerInfo />
                 <form>
                     Cookies amount: <input type="text" id="amount"></input>
                     Cookies per second<input type= "text" id="perSecond"></input>
@@ -25,17 +50,21 @@ class CookiesClicker extends React.Component {
                 <button onClick={addCookies}>Add value</button>
                 <button onClick={getCookies}>Get value</button>
                 <button onClick={updateCookies}>Update value</button>
-                <p>Cookies amount {cookies.amount}</p>
+                <p>Cookies amount {this.state.amount}</p>
+                <p>Cookies amount {this.state.perSecond}</p>
             </div>
-        )
+        );
     }
 }
 
 class ProducerList extends React.Component {
+
     render() {
         return (
             <div>
-                <Arrow />
+                <Cursor />
+                <Grandma />
+                <Farm />
             </div>
         );
     }
@@ -43,14 +72,60 @@ class ProducerList extends React.Component {
 
 class ProducerInfo extends React.Component {
     render() {
-        return (console.log("info"));
+        return (
+            <div>
+                <CursorInfo />
+                <GrandmaInfo />
+                <FarmInfo />
+            </div>
+        );
     }
 }
 
-class Arrow extends React.Component {
+class Cursor extends React.Component {
     render() {
         return (
-            <div>Bla</div>
+            <div><button>Buy Cursor </button></div>
+        );
+    }
+}
+
+class Grandma extends React.Component {
+    render() {
+        return (
+            <div><button>Buy Grandma</button></div>
+        );
+    }
+}
+
+class Farm extends React.Component {
+    render() {
+        return (
+            <div><button>Buy Farm</button></div>
+        );
+    }
+}
+
+class CursorInfo extends React.Component {
+    render() {
+        return (
+            <div><p>Cursor cost:</p></div>
+        );
+    }
+}
+
+class GrandmaInfo extends React.Component {
+    render() {
+        return (
+            <div><p>Grandma cost:</p></div>
+        );
+    }
+}
+
+class FarmInfo extends React.Component {
+    render() {
+        return (
+            <div><p>Farm cost:</p></div>
         );
     }
 }
