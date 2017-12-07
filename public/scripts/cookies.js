@@ -14,7 +14,7 @@ else {
 }
 
 if (dbSupported) {
-    var dbOpen= indexedDB.open("CookieDB", 4);
+    var dbOpen= indexedDB.open("CookieDB", 6);
 
     dbOpen.onupgradeneeded = function(e) {
         console.log("Upgrading");
@@ -45,9 +45,21 @@ function addCookies(e) {
     var store = requestDB("CookiesStore", "readwrite");
 
         var cookies = {
-            id: document.getElementById("id").value,
-            amount: document.getElementById("amount").value,
-            perSecond: document.getElementById("perSecond").value
+            id: 1,
+            amount: 0,
+            perSecond: 1
+        }
+
+        var producers = {
+            id: 2,
+            cursorAmount: 0,
+            cursorCost: 0,
+            grandmaAmount: 0,
+            grandmaCost: 0,
+            mineAmount: 0,
+            mineCost: 0,
+            farmAmount: 0,
+            farmCost: 0
         }
 
         var addRequest = store.add(cookies);
@@ -58,12 +70,20 @@ function addCookies(e) {
         addRequest.onsuccess = function(e) {
             console.log("Cookies added");
         }
+        var addRequest = store.add(producers);
+        
+                addRequest.onerror = function(e) {
+                    console.log("Producers not added");
+                }
+                addRequest.onsuccess = function(e) {
+                    console.log("Producers added");
+                }
 }
 
 function getCookies(e) {
     var store = requestDB("CookiesStore", "readonly");
 
-    var getRequest= store.get(1);
+    var getRequest= store.get(document.getElementById("id").value);
     getRequest.onsuccess = function(e) {
         console.log(this.result);
         var result = this.result;
@@ -81,6 +101,7 @@ function updateCookies(e) {
         console.log(result.amount);
         result.amount = document.getElementById("amount").value;
         result.perSecond = document.getElementById("perSecond").value;
+        console.log(result);
         var requestUpdate = store.put(result);
             requestUpdate.onerror = function(e) {
                 console.log("Error");
@@ -89,5 +110,49 @@ function updateCookies(e) {
                 console.log("Amount changed");
             }
     }
-    return "Cookies added"
+}
+
+function updateCookiesDatabase(id, amount, perSecond, e) {
+    var store = requestDB("CookiesStore", "readwrite");
+    var getRequest = store.get(id);
+
+    getRequest.onsuccess = function(e) {
+        var result = this.result;
+        result.amount = amount;
+        result.perSecond = perSecond;
+        console.log(result);
+        var requestUpdate = store.put(result);
+        requestUpdate.onerror = function(e) {
+            console.log("Error");
+        }
+        requestUpdate.onsuccess = function(e) {
+            console.log("Amount changed");
+        }
+    }  
+}
+
+function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, mineAmount,
+    mineCost, farmAmount, farmCost, e) {
+    var store = requestDB("CookiesStore", "readwrite");
+    var getRequest = store.get(id);
+
+    getRequest.onsuccess = function(e) {
+        var result = this.result;
+        result.cursorAmount = cursorAmount;
+        result.cursorCost = cursorCost;
+        result.grandmaAmount = grandmaAmount;
+        result.grandmaCost = grandmaCost;
+        result.mineAmount = mineAmount;
+        result.mineCost = mineCost;
+        result.farmAmount = farmAmount;
+        result.farmCost = farmCost;
+        console.log(result);
+        var requestUpdate = store.put(result);
+        requestUpdate.onerror = function(e) {
+            console.log("Error");
+        }
+        requestUpdate.onsuccess = function(e) {
+            console.log("Amount changed");
+        }
+    }  
 }

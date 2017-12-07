@@ -8,33 +8,35 @@ requirejs.config({
 
 requirejs(['react', 'react-dom'], function(React, ReactDOM) {
 
-
-    let producers = {
-            grandmaAmount: 0,
-            grandmaCost: 0,
-            mineAmount: 0,
-            mineCost: 0,
-            farmAmount: 0,
-            farmCost: 0
-
-    }
 class CookiesClicker extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
                 amount: 0,
-                perSecond : 0
+                perSecond : 0,
+                cursorAmount: 0,
+                cursorCost: 0,
+                grandmaAmount: 0,
+                grandmaCost: 0,
+                mineAmount: 0,
+                mineCost: 0,
+                farmAmount: 0,
+                farmCost: 0
             }
         
     }
     componentDidMount() {
-        this.intervalId = setInterval(() => this.setState({amount: this.state.amount +1}), 1000)
-        this.intervalSec = setInterval(() => getCookies(), 1000);
+        this.intervalTim = setInterval(() => this.setState({amount: this.state.amount +1}), 1000)
+        this.intervalCookies = setInterval(() => updateCookiesDatabase(1, this.state.amount, this.state.perSecond), 10000);
+        this.intervalProducers = setInterval(() => updateProducersDatabase(2, this.state.cursorAmount, this.state.cursorCost,
+            this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,
+            this.state.farmAmount, this.state.farmCost), 10000);
     }
 
     componentWillUnmount() {
-        clearInterval(this.intervalId);
-        clearInterval(this.intervalSec);
+        clearInterval(this.intervalTim);
+        clearInterval(this.intervalCookies);
+        clearInterval(this.intervalProducers);
       }
 
     render() {
