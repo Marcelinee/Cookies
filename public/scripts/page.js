@@ -17,26 +17,59 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function (React, ReactDOM) {
+
+    var producers = {
+        grandmaAmount: 0,
+        grandmaCost: 0,
+        mineAmount: 0,
+        mineCost: 0,
+        farmAmount: 0,
+        farmCost: 0
+
+    };
+
     var CookiesClicker = function (_React$Component) {
         _inherits(CookiesClicker, _React$Component);
 
-        function CookiesClicker() {
+        function CookiesClicker(props) {
             _classCallCheck(this, CookiesClicker);
 
-            return _possibleConstructorReturn(this, (CookiesClicker.__proto__ || Object.getPrototypeOf(CookiesClicker)).apply(this, arguments));
+            var _this = _possibleConstructorReturn(this, (CookiesClicker.__proto__ || Object.getPrototypeOf(CookiesClicker)).call(this, props));
+
+            _this.state = {
+                amount: 0,
+                perSecond: 0
+            };
+
+            return _this;
         }
 
         _createClass(CookiesClicker, [{
+            key: 'componentDidMount',
+            value: function componentDidMount() {
+                var _this2 = this;
+
+                this.intervalId = setInterval(function () {
+                    return _this2.setState({ amount: _this2.state.amount + 1 });
+                }, 1000);
+                this.intervalSec = setInterval(function () {
+                    return getCookies();
+                }, 1000);
+            }
+        }, {
+            key: 'componentWillUnmount',
+            value: function componentWillUnmount() {
+                clearInterval(this.intervalId);
+                clearInterval(this.intervalSec);
+            }
+        }, {
             key: 'render',
             value: function render() {
-                var cookies = {
-                    amount: 0,
-                    perSecond: 0
-                };
                 return React.createElement(
                     'div',
                     null,
                     React.createElement(ProducerList, null),
+                    React.createElement(ProducerInfo, null),
                     React.createElement(
                         'form',
                         null,
@@ -66,7 +99,13 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         'p',
                         null,
                         'Cookies amount ',
-                        cookies.amount
+                        this.state.amount
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        'Cookies amount ',
+                        this.state.perSecond
                     )
                 );
             }
@@ -90,7 +129,9 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 return React.createElement(
                     'div',
                     null,
-                    React.createElement(Arrow, null)
+                    React.createElement(Cursor, null),
+                    React.createElement(Grandma, null),
+                    React.createElement(Farm, null)
                 );
             }
         }]);
@@ -110,34 +151,179 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         _createClass(ProducerInfo, [{
             key: 'render',
             value: function render() {
-                return console.log("info");
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(CursorInfo, null),
+                    React.createElement(GrandmaInfo, null),
+                    React.createElement(FarmInfo, null)
+                );
             }
         }]);
 
         return ProducerInfo;
     }(React.Component);
 
-    var Arrow = function (_React$Component4) {
-        _inherits(Arrow, _React$Component4);
+    var Cursor = function (_React$Component4) {
+        _inherits(Cursor, _React$Component4);
 
-        function Arrow() {
-            _classCallCheck(this, Arrow);
+        function Cursor() {
+            _classCallCheck(this, Cursor);
 
-            return _possibleConstructorReturn(this, (Arrow.__proto__ || Object.getPrototypeOf(Arrow)).apply(this, arguments));
+            return _possibleConstructorReturn(this, (Cursor.__proto__ || Object.getPrototypeOf(Cursor)).apply(this, arguments));
         }
 
-        _createClass(Arrow, [{
+        _createClass(Cursor, [{
             key: 'render',
             value: function render() {
                 return React.createElement(
                     'div',
                     null,
-                    'Bla'
+                    React.createElement(
+                        'button',
+                        null,
+                        'Buy Cursor '
+                    )
                 );
             }
         }]);
 
-        return Arrow;
+        return Cursor;
+    }(React.Component);
+
+    var Grandma = function (_React$Component5) {
+        _inherits(Grandma, _React$Component5);
+
+        function Grandma() {
+            _classCallCheck(this, Grandma);
+
+            return _possibleConstructorReturn(this, (Grandma.__proto__ || Object.getPrototypeOf(Grandma)).apply(this, arguments));
+        }
+
+        _createClass(Grandma, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'button',
+                        null,
+                        'Buy Grandma'
+                    )
+                );
+            }
+        }]);
+
+        return Grandma;
+    }(React.Component);
+
+    var Farm = function (_React$Component6) {
+        _inherits(Farm, _React$Component6);
+
+        function Farm() {
+            _classCallCheck(this, Farm);
+
+            return _possibleConstructorReturn(this, (Farm.__proto__ || Object.getPrototypeOf(Farm)).apply(this, arguments));
+        }
+
+        _createClass(Farm, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'button',
+                        null,
+                        'Buy Farm'
+                    )
+                );
+            }
+        }]);
+
+        return Farm;
+    }(React.Component);
+
+    var CursorInfo = function (_React$Component7) {
+        _inherits(CursorInfo, _React$Component7);
+
+        function CursorInfo() {
+            _classCallCheck(this, CursorInfo);
+
+            return _possibleConstructorReturn(this, (CursorInfo.__proto__ || Object.getPrototypeOf(CursorInfo)).apply(this, arguments));
+        }
+
+        _createClass(CursorInfo, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        'Cursor cost:'
+                    )
+                );
+            }
+        }]);
+
+        return CursorInfo;
+    }(React.Component);
+
+    var GrandmaInfo = function (_React$Component8) {
+        _inherits(GrandmaInfo, _React$Component8);
+
+        function GrandmaInfo() {
+            _classCallCheck(this, GrandmaInfo);
+
+            return _possibleConstructorReturn(this, (GrandmaInfo.__proto__ || Object.getPrototypeOf(GrandmaInfo)).apply(this, arguments));
+        }
+
+        _createClass(GrandmaInfo, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        'Grandma cost:'
+                    )
+                );
+            }
+        }]);
+
+        return GrandmaInfo;
+    }(React.Component);
+
+    var FarmInfo = function (_React$Component9) {
+        _inherits(FarmInfo, _React$Component9);
+
+        function FarmInfo() {
+            _classCallCheck(this, FarmInfo);
+
+            return _possibleConstructorReturn(this, (FarmInfo.__proto__ || Object.getPrototypeOf(FarmInfo)).apply(this, arguments));
+        }
+
+        _createClass(FarmInfo, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'p',
+                        null,
+                        'Farm cost:'
+                    )
+                );
+            }
+        }]);
+
+        return FarmInfo;
     }(React.Component);
 
     ReactDOM.render(React.createElement(CookiesClicker, null), document.getElementById('cookies'));

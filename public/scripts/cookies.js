@@ -63,7 +63,7 @@ function addCookies(e) {
 function getCookies(e) {
     var store = requestDB("CookiesStore", "readonly");
 
-    var getRequest= store.get(document.getElementById("id").value);
+    var getRequest= store.get(1);
     getRequest.onsuccess = function(e) {
         console.log(this.result);
         var result = this.result;
@@ -89,4 +89,5 @@ function updateCookies(e) {
                 console.log("Amount changed");
             }
     }
+    return "Cookies added"
 }
