@@ -36,6 +36,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 return React.createElement(
                     'div',
                     null,
+                    React.createElement(ProducerList, null),
                     React.createElement(
                         'form',
                         null,
@@ -72,6 +73,71 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }]);
 
         return CookiesClicker;
+    }(React.Component);
+
+    var ProducerList = function (_React$Component2) {
+        _inherits(ProducerList, _React$Component2);
+
+        function ProducerList() {
+            _classCallCheck(this, ProducerList);
+
+            return _possibleConstructorReturn(this, (ProducerList.__proto__ || Object.getPrototypeOf(ProducerList)).apply(this, arguments));
+        }
+
+        _createClass(ProducerList, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    React.createElement(Arrow, null)
+                );
+            }
+        }]);
+
+        return ProducerList;
+    }(React.Component);
+
+    var ProducerInfo = function (_React$Component3) {
+        _inherits(ProducerInfo, _React$Component3);
+
+        function ProducerInfo() {
+            _classCallCheck(this, ProducerInfo);
+
+            return _possibleConstructorReturn(this, (ProducerInfo.__proto__ || Object.getPrototypeOf(ProducerInfo)).apply(this, arguments));
+        }
+
+        _createClass(ProducerInfo, [{
+            key: 'render',
+            value: function render() {
+                return console.log("info");
+            }
+        }]);
+
+        return ProducerInfo;
+    }(React.Component);
+
+    var Arrow = function (_React$Component4) {
+        _inherits(Arrow, _React$Component4);
+
+        function Arrow() {
+            _classCallCheck(this, Arrow);
+
+            return _possibleConstructorReturn(this, (Arrow.__proto__ || Object.getPrototypeOf(Arrow)).apply(this, arguments));
+        }
+
+        _createClass(Arrow, [{
+            key: 'render',
+            value: function render() {
+                return React.createElement(
+                    'div',
+                    null,
+                    'Bla'
+                );
+            }
+        }]);
+
+        return Arrow;
     }(React.Component);
 
     ReactDOM.render(React.createElement(CookiesClicker, null), document.getElementById('cookies'));

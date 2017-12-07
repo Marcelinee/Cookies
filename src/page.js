@@ -16,6 +16,7 @@ class CookiesClicker extends React.Component {
         }
         return (
             <div>
+            <ProducerList />
                 <form>
                     Cookies amount: <input type="text" id="amount"></input>
                     Cookies per second<input type= "text" id="perSecond"></input>
@@ -27,6 +28,30 @@ class CookiesClicker extends React.Component {
                 <p>Cookies amount {cookies.amount}</p>
             </div>
         )
+    }
+}
+
+class ProducerList extends React.Component {
+    render() {
+        return (
+            <div>
+                <Arrow />
+            </div>
+        );
+    }
+}
+
+class ProducerInfo extends React.Component {
+    render() {
+        return (console.log("info"));
+    }
+}
+
+class Arrow extends React.Component {
+    render() {
+        return (
+            <div>Bla</div>
+        );
     }
 }
 
