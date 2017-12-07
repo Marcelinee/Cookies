@@ -17,17 +17,6 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function (React, ReactDOM) {
-
-    var producers = {
-        grandmaAmount: 0,
-        grandmaCost: 0,
-        mineAmount: 0,
-        mineCost: 0,
-        farmAmount: 0,
-        farmCost: 0
-
-    };
-
     var CookiesClicker = function (_React$Component) {
         _inherits(CookiesClicker, _React$Component);
 
@@ -38,7 +27,15 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
 
             _this.state = {
                 amount: 0,
-                perSecond: 0
+                perSecond: 0,
+                cursorAmount: 0,
+                cursorCost: 0,
+                grandmaAmount: 0,
+                grandmaCost: 0,
+                mineAmount: 0,
+                mineCost: 0,
+                farmAmount: 0,
+                farmCost: 0
             };
 
             return _this;
@@ -49,18 +46,22 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
             value: function componentDidMount() {
                 var _this2 = this;
 
-                this.intervalId = setInterval(function () {
+                this.intervalTim = setInterval(function () {
                     return _this2.setState({ amount: _this2.state.amount + 1 });
                 }, 1000);
-                this.intervalSec = setInterval(function () {
-                    return getCookies();
-                }, 1000);
+                this.intervalCookies = setInterval(function () {
+                    return updateCookiesDatabase(1, _this2.state.amount, _this2.state.perSecond);
+                }, 10000);
+                this.intervalProducers = setInterval(function () {
+                    return updateProducersDatabase(2, _this2.state.cursorAmount, _this2.state.cursorCost, _this2.state.grandmaAmount, _this2.state.grandmaCost, _this2.state.mineAmount, _this2.state.mineCost, _this2.state.farmAmount, _this2.state.farmCost);
+                }, 10000);
             }
         }, {
             key: 'componentWillUnmount',
             value: function componentWillUnmount() {
-                clearInterval(this.intervalId);
-                clearInterval(this.intervalSec);
+                clearInterval(this.intervalTim);
+                clearInterval(this.intervalCookies);
+                clearInterval(this.intervalProducers);
             }
         }, {
             key: 'render',
