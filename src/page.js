@@ -1,4 +1,4 @@
-require(["/scripts/cookies.js"], function(cookies){});
+require(["scripts/cookies.js"], function(cookies){});
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
@@ -7,7 +7,7 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function(React, ReactDOM) {
-
+var cookiesUpdate, producersUpdate;
 class CookiesClicker extends React.Component {
     constructor(props) {
         super(props);
@@ -22,16 +22,37 @@ class CookiesClicker extends React.Component {
                 mineCost: 0,
                 farmAmount: 0,
                 farmCost: 0
-            }
+            };
         
     }
+
+
     componentDidMount() {
+        var that = this; 
+        var cookiesRestore, producersRestore;
+        setTimeout(function() {
+            pageCookiesRestore(function(cookies) {
+            console.log(cookies); cookiesRestore = cookies; console.log(cookiesRestore.amount);
+            that.setState({amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond});
+            })
+        }, 100);
+        setTimeout(function() {
+            pageProducersRestore(function(producers) {
+            console.log(producers); producersRestore = producers; console.log(producersRestore.amount);
+            that.setState({cursorAmount: producersRestore.cursorAmount, cursorValue: producersRestore.cursorCost,
+                           grandmaAmount: producersRestore.grandmaAmount, grandmaValue: producersRestore.grandmaCost,
+                           mineAmount: producersRestore.mineAmount, mineValue: producersRestore.mineCost,
+                           farmAmount: producersRestore.farmAmount, farmValue: producersRestore.farmCost});
+            })
+        }, 100);
+ 
         this.intervalTim = setInterval(() => this.setState({amount: this.state.amount +1}), 1000)
-        this.intervalCookies = setInterval(() => updateCookiesDatabase(1, this.state.amount, this.state.perSecond), 10000);
-        this.intervalProducers = setInterval(() => updateProducersDatabase(2, this.state.cursorAmount, this.state.cursorCost,
-            this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,
-            this.state.farmAmount, this.state.farmCost), 10000);
-    }
+        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 10000);
+        this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
+        this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,
+        this.state.farmAmount, this.state.farmCost), 10000);
+        
+        }
 
     componentWillUnmount() {
         clearInterval(this.intervalTim);
@@ -53,9 +74,10 @@ class CookiesClicker extends React.Component {
                 <button onClick={getCookies}>Get value</button>
                 <button onClick={updateCookies}>Update value</button>
                 <p>Cookies amount {this.state.amount}</p>
-                <p>Cookies amount {this.state.perSecond}</p>
+                <p>Cookies per second {this.state.perSecond}</p>
             </div>
         );
+
     }
 }
 
