@@ -1,4 +1,4 @@
-require(["/scripts/cookies.js"], function(cookies){});
+require(["scripts/cookies.js"], function(cookies){});
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
