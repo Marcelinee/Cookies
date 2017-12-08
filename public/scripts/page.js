@@ -17,6 +17,8 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function (React, ReactDOM) {
+    var cookiesUpdate, producersUpdate;
+
     var CookiesClicker = function (_React$Component) {
         _inherits(CookiesClicker, _React$Component);
 
@@ -46,14 +48,32 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
             value: function componentDidMount() {
                 var _this2 = this;
 
+                var that = this;
+                var cookiesRestore, producersRestore;
+                setTimeout(function () {
+                    pageCookiesRestore(function (cookies) {
+                        console.log(cookies);cookiesRestore = cookies;console.log(cookiesRestore.amount);
+                        that.setState({ amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond });
+                    });
+                }, 100);
+                setTimeout(function () {
+                    pageProducersRestore(function (producers) {
+                        console.log(producers);producersRestore = producers;console.log(producersRestore.amount);
+                        that.setState({ cursorAmount: producersRestore.cursorAmount, cursorValue: producersRestore.cursorCost,
+                            grandmaAmount: producersRestore.grandmaAmount, grandmaValue: producersRestore.grandmaCost,
+                            mineAmount: producersRestore.mineAmount, mineValue: producersRestore.mineCost,
+                            farmAmount: producersRestore.farmAmount, farmValue: producersRestore.farmCost });
+                    });
+                }, 100);
+
                 this.intervalTim = setInterval(function () {
                     return _this2.setState({ amount: _this2.state.amount + 1 });
                 }, 1000);
                 this.intervalCookies = setInterval(function () {
-                    return updateCookiesDatabase(1, _this2.state.amount, _this2.state.perSecond);
+                    return updateCookiesDatabase("cookies", _this2.state.amount, _this2.state.perSecond);
                 }, 10000);
                 this.intervalProducers = setInterval(function () {
-                    return updateProducersDatabase(2, _this2.state.cursorAmount, _this2.state.cursorCost, _this2.state.grandmaAmount, _this2.state.grandmaCost, _this2.state.mineAmount, _this2.state.mineCost, _this2.state.farmAmount, _this2.state.farmCost);
+                    return updateProducersDatabase("producers", _this2.state.cursorAmount, _this2.state.cursorCost, _this2.state.grandmaAmount, _this2.state.grandmaCost, _this2.state.mineAmount, _this2.state.mineCost, _this2.state.farmAmount, _this2.state.farmCost);
                 }, 10000);
             }
         }, {
@@ -105,7 +125,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                     React.createElement(
                         'p',
                         null,
-                        'Cookies amount ',
+                        'Cookies per second ',
                         this.state.perSecond
                     )
                 );
