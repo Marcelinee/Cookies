@@ -54,7 +54,7 @@ class CookiesClicker extends React.Component {
             })
         }, 100);
  
-        this.intervalTim = setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond)/10)}), 100)
+        this.intervalTim = setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond))}), 100)
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 10000);
         this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
         this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,

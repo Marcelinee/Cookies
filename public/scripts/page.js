@@ -78,7 +78,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 }, 100);
 
                 this.intervalTim = setInterval(function () {
-                    return _this2.setState({ amount: Math.floor(_this2.state.amount + _this2.state.perSecond / 10) });
+                    return _this2.setState({ amount: Math.floor(_this2.state.amount + _this2.state.perSecond) });
                 }, 100);
                 this.intervalCookies = setInterval(function () {
                     return updateCookiesDatabase("cookies", _this2.state.amount, _this2.state.perSecond);
