@@ -1,4 +1,4 @@
-require(["scripts/cookies.js"], function(cookies){});
+requirejs(["scripts/cookies.js"], function(cookies){});
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
@@ -54,8 +54,9 @@ class CookiesClicker extends React.Component {
             })
         }, 100);
  
-        this.intervalTim = setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond))}), 100)
-        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 10000);
+        this.intervalTim = this.state.perSecond < 10 ? (setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond/10))}), 100))
+                                                      :(setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond))}), 1000));
+        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 3000);
         this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
         this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,
         this.state.farmAmount, this.state.farmCost), 10000);
@@ -64,13 +65,11 @@ class CookiesClicker extends React.Component {
         }
 
     cookiesCpsUpdate() {
-        this.setState({perSecond: (this.state.grandmaAmount * cpsMultiplier.grandma)});
+        this.setState({perSecond: (this.state.cursorAmount * cpsMultiplier.cursor + this.state.grandmaAmount * cpsMultiplier.grandma
+                                 + this.state.mineAmount * cpsMultiplier.mine + this.state.farmAmount * cpsMultiplier.farm)});
     }
 
     handleBuy(producer) {
-       // this.setState((prevState) => {
-            //this.setState({[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[[producer + "Cost"]]})});
-       
         this.setState((prevState) => ({[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[producer + "Cost"] + 1}));
     }
 
@@ -81,19 +80,17 @@ class CookiesClicker extends React.Component {
       }
 
     render() {
-        //cps = this.state.grandmaAmount*cpsMultiplier.grandma + this.state.cursorAmount*cpsMultiplier.cursor; //It does not need to be computed with every render (to constructor?)
         return (
             <div>
-            <ProducerList handleBuy={this.handleBuy} grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}/>
-            <ProducerInfo grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}/>
-                <form>
-                    Cookies amount: <input type="text" id="amount"></input>
-                    Cookies per second<input type= "text" id="perSecond"></input>
-                    Cookies DB key<input type="text" id="id"></input>
-                </form>
-                <button onClick={addCookies}>Add value</button>
-                <button onClick={getCookies}>Get value</button>
-                <button onClick={updateCookies}>Update value</button>
+            <ProducerList cookiesCpsUpdate= {this.cookiesCpsUpdate} handleBuy={this.handleBuy} cursorAmount={this.state.cursorAmount} cursorCost={this.state.cursorCost}
+                                                    grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}
+                                                    mineAmount={this.state.mineAmount} mineCost={this.state.mineCost}
+                                                    farmAmount={this.state.farmAmount} farmCost={this.state.farmCost}/>
+            <ProducerInfo cursorAmount={this.state.cursorAmount} cursorCost={this.state.cursorCost}
+                            grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}
+                            mineAmount={this.state.mineAmount} mineCost={this.state.mineCost}
+                            farmAmount={this.state.farmAmount} farmCost={this.state.farmCost}/>
+
                 <button onClick={this.cookiesCpsUpdate}>Update cps</button>
                 <p>Cookies amount {this.state.amount}</p>
                 <p>Cookies per second {this.state.perSecond}</p>
@@ -108,9 +105,10 @@ class ProducerList extends React.Component {
     render() {
         return (
             <div>
-                <Cursor />
-                <Grandma  handleBuy={() => this.props.handleBuy("grandma")} grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
-                <Farm />
+                <Cursor handleBuy={() => this.props.handleBuy("cursor")} cookiesCpsUpdate={() => this.props.cookiesCpsUpdate()} cursorAmount={this.props.cursorAmount} cursorCost={this.props.cursorCost}/>              
+                <Grandma handleBuy={() => this.props.handleBuy("grandma")} cookiesCpsUpdate={() => this.props.cookiesCpsUpdate()} grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
+                <Mine handleBuy={() => this.props.handleBuy("mine")} cookiesCpsUpdate={() => this.props.cookiesCpsUpdate()} cursorAmount={this.props.mineAmount} cursorCost={this.props.mineCost}/>
+                <Farm handleBuy={() => this.props.handleBuy("farm")} cookiesCpsUpdate={() => this.props.cookiesCpsUpdate()} farmAmount={this.props.farmAmount} farmCost={this.props.farmCost}/>
             </div>
         );
     }
@@ -120,9 +118,10 @@ class ProducerInfo extends React.Component {
     render() {
         return (
             <div>
-                <CursorInfo />
-                <GrandmaInfo handleBuy={this.props.handleBuy} grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
-                <FarmInfo />
+                <CursorInfo cursorAmount={this.props.cursorAmount} cursorCost={this.props.cursorCost}/>
+                <GrandmaInfo grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
+                <MineInfo mineAmount={this.props.mineAmount} mineCost={this.props.mineCost}/>
+                <FarmInfo farmAmount={this.props.farmAmount} farmCost={this.props.farmCost}/>
             </div>
         );
     }
@@ -131,7 +130,7 @@ class ProducerInfo extends React.Component {
 class Cursor extends React.Component {
     render() {
         return (
-            <div><button>Buy Cursor </button></div>
+            <div><button onClick={() => {this.props.handleBuy("cursor"); this.props.cookiesCpsUpdate()}}>Buy Cursor </button></div>
         );
     }
 }
@@ -139,7 +138,15 @@ class Cursor extends React.Component {
 class Grandma extends React.Component {
     render() {
         return (
-            <div><button onClick={this.props.handleBuy}>Buy Grandma</button></div>
+            <div><button onClick={() => {this.props.handleBuy("grandma"); this.props.cookiesCpsUpdate()}}>Buy Grandma</button></div>
+        );
+    }
+}
+
+class Mine extends React.Component {
+    render() {
+        return (
+            <div><button onClick={() => {this.props.handleBuy("mine"); this.props.cookiesCpsUpdate()}}>Buy Mine</button></div>
         );
     }
 }
@@ -147,7 +154,7 @@ class Grandma extends React.Component {
 class Farm extends React.Component {
     render() {
         return (
-            <div><button>Buy Farm</button></div>
+            <div><button onClick={() => {this.props.handleBuy("farm"); this.props.cookiesCpsUpdate()}}>Buy Farm </button></div>
         );
     }
 }
@@ -155,7 +162,10 @@ class Farm extends React.Component {
 class CursorInfo extends React.Component {
     render() {
         return (
-            <div><p>Cursor cost:</p></div>
+            <div>
+            <p>Cursor amount: {this.props.cursorAmount}</p>
+            <p>Cursor cost: {this.props.cursorCost}</p>
+            </div>
         );
     }
 }
@@ -171,10 +181,24 @@ class GrandmaInfo extends React.Component {
     }
 }
 
+class MineInfo extends React.Component {
+    render() {
+        return (
+            <div>
+            <p>Mine amount: {this.props.mineAmount}</p>
+            <p>Mine cost: {this.props.mineCost}</p>
+            </div>
+        );
+    }
+}
+
 class FarmInfo extends React.Component {
     render() {
         return (
-            <div><p>Farm cost:</p></div>
+            <div>
+            <p>Farm amount: {this.props.farmAmount}</p>
+            <p>Farm cost: {this.props.farmCost}</p>
+            </div>
         );
     }
 }
