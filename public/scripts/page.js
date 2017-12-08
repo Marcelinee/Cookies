@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -17,7 +19,13 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function (React, ReactDOM) {
-    var cookiesUpdate, producersUpdate;
+    var cpsMultiplier = {
+        cursor: 1,
+        grandma: 5,
+        mine: 10,
+        farm: 20
+    };
+    var cps = void 0;
 
     var CookiesClicker = function (_React$Component) {
         _inherits(CookiesClicker, _React$Component);
@@ -27,9 +35,11 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
 
             var _this = _possibleConstructorReturn(this, (CookiesClicker.__proto__ || Object.getPrototypeOf(CookiesClicker)).call(this, props));
 
+            _this.cookiesCpsUpdate = _this.cookiesCpsUpdate.bind(_this);
+            _this.handleBuy = _this.handleBuy.bind(_this);
             _this.state = {
                 amount: 0,
-                perSecond: 0,
+                perSecond: 0, //is it needed here?
                 cursorAmount: 0,
                 cursorCost: 0,
                 grandmaAmount: 0,
@@ -39,7 +49,6 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 farmAmount: 0,
                 farmCost: 0
             };
-
             return _this;
         }
 
@@ -50,12 +59,14 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
 
                 var that = this;
                 var cookiesRestore, producersRestore;
+
                 setTimeout(function () {
                     pageCookiesRestore(function (cookies) {
                         console.log(cookies);cookiesRestore = cookies;console.log(cookiesRestore.amount);
                         that.setState({ amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond });
                     });
                 }, 100);
+
                 setTimeout(function () {
                     pageProducersRestore(function (producers) {
                         console.log(producers);producersRestore = producers;console.log(producersRestore.amount);
@@ -67,14 +78,32 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 }, 100);
 
                 this.intervalTim = setInterval(function () {
-                    return _this2.setState({ amount: _this2.state.amount + 1 });
-                }, 1000);
+                    return _this2.setState({ amount: Math.floor(_this2.state.amount + _this2.state.perSecond) });
+                }, 100);
                 this.intervalCookies = setInterval(function () {
                     return updateCookiesDatabase("cookies", _this2.state.amount, _this2.state.perSecond);
                 }, 10000);
                 this.intervalProducers = setInterval(function () {
                     return updateProducersDatabase("producers", _this2.state.cursorAmount, _this2.state.cursorCost, _this2.state.grandmaAmount, _this2.state.grandmaCost, _this2.state.mineAmount, _this2.state.mineCost, _this2.state.farmAmount, _this2.state.farmCost);
                 }, 10000);
+                //cookiesCpsUpdate();
+            }
+        }, {
+            key: 'cookiesCpsUpdate',
+            value: function cookiesCpsUpdate() {
+                this.setState({ perSecond: this.state.grandmaAmount * cpsMultiplier.grandma });
+            }
+        }, {
+            key: 'handleBuy',
+            value: function handleBuy(producer) {
+                // this.setState((prevState) => {
+                //this.setState({[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[[producer + "Cost"]]})});
+
+                this.setState(function (prevState) {
+                    var _ref;
+
+                    return _ref = {}, _defineProperty(_ref, producer + "Amount", prevState[producer + "Amount"] + 1), _defineProperty(_ref, producer + "Cost", prevState[producer + "Cost"] + 1), _ref;
+                });
             }
         }, {
             key: 'componentWillUnmount',
@@ -86,11 +115,12 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }, {
             key: 'render',
             value: function render() {
+                //cps = this.state.grandmaAmount*cpsMultiplier.grandma + this.state.cursorAmount*cpsMultiplier.cursor; //It does not need to be computed with every render (to constructor?)
                 return React.createElement(
                     'div',
                     null,
-                    React.createElement(ProducerList, null),
-                    React.createElement(ProducerInfo, null),
+                    React.createElement(ProducerList, { handleBuy: this.handleBuy, grandmaAmount: this.state.grandmaAmount, grandmaCost: this.state.grandmaCost }),
+                    React.createElement(ProducerInfo, { grandmaAmount: this.state.grandmaAmount, grandmaCost: this.state.grandmaCost }),
                     React.createElement(
                         'form',
                         null,
@@ -115,6 +145,11 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         'button',
                         { onClick: updateCookies },
                         'Update value'
+                    ),
+                    React.createElement(
+                        'button',
+                        { onClick: this.cookiesCpsUpdate },
+                        'Update cps'
                     ),
                     React.createElement(
                         'p',
@@ -147,11 +182,15 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         _createClass(ProducerList, [{
             key: 'render',
             value: function render() {
+                var _this4 = this;
+
                 return React.createElement(
                     'div',
                     null,
                     React.createElement(Cursor, null),
-                    React.createElement(Grandma, null),
+                    React.createElement(Grandma, { handleBuy: function handleBuy() {
+                            return _this4.props.handleBuy("grandma");
+                        }, grandmaAmount: this.props.grandmaAmount, grandmaCost: this.props.grandmaCost }),
                     React.createElement(Farm, null)
                 );
             }
@@ -176,7 +215,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                     'div',
                     null,
                     React.createElement(CursorInfo, null),
-                    React.createElement(GrandmaInfo, null),
+                    React.createElement(GrandmaInfo, { handleBuy: this.props.handleBuy, grandmaAmount: this.props.grandmaAmount, grandmaCost: this.props.grandmaCost }),
                     React.createElement(FarmInfo, null)
                 );
             }
@@ -229,7 +268,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                     null,
                     React.createElement(
                         'button',
-                        null,
+                        { onClick: this.props.handleBuy },
                         'Buy Grandma'
                     )
                 );
@@ -311,7 +350,14 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                     React.createElement(
                         'p',
                         null,
-                        'Grandma cost:'
+                        'Grandma amount: ',
+                        this.props.grandmaAmount
+                    ),
+                    React.createElement(
+                        'p',
+                        null,
+                        'Grandma cost: ',
+                        this.props.grandmaCost
                     )
                 );
             }

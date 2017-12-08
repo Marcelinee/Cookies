@@ -7,13 +7,21 @@ requirejs.config({
 });
 
 requirejs(['react', 'react-dom'], function(React, ReactDOM) {
-var cookiesUpdate, producersUpdate;
+const cpsMultiplier = {
+    cursor: 1,
+    grandma: 5,
+    mine: 10,
+    farm: 20
+}    
+let cps;
 class CookiesClicker extends React.Component {
     constructor(props) {
         super(props);
+        this.cookiesCpsUpdate = this.cookiesCpsUpdate.bind(this);
+        this.handleBuy = this.handleBuy.bind(this);
         this.state = {
                 amount: 0,
-                perSecond : 0,
+                perSecond : 0, //is it needed here?
                 cursorAmount: 0,
                 cursorCost: 0,
                 grandmaAmount: 0,
@@ -23,19 +31,19 @@ class CookiesClicker extends React.Component {
                 farmAmount: 0,
                 farmCost: 0
             };
-        
     }
-
 
     componentDidMount() {
         var that = this; 
         var cookiesRestore, producersRestore;
+
         setTimeout(function() {
             pageCookiesRestore(function(cookies) {
             console.log(cookies); cookiesRestore = cookies; console.log(cookiesRestore.amount);
             that.setState({amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond});
             })
         }, 100);
+
         setTimeout(function() {
             pageProducersRestore(function(producers) {
             console.log(producers); producersRestore = producers; console.log(producersRestore.amount);
@@ -46,13 +54,25 @@ class CookiesClicker extends React.Component {
             })
         }, 100);
  
-        this.intervalTim = setInterval(() => this.setState({amount: this.state.amount +1}), 1000)
+        this.intervalTim = setInterval(() => this.setState({amount: Math.floor(this.state.amount + (this.state.perSecond))}), 100)
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 10000);
         this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
         this.state.grandmaAmount, this.state.grandmaCost, this.state.mineAmount, this.state.mineCost,
         this.state.farmAmount, this.state.farmCost), 10000);
+        //cookiesCpsUpdate();
         
         }
+
+    cookiesCpsUpdate() {
+        this.setState({perSecond: (this.state.grandmaAmount * cpsMultiplier.grandma)});
+    }
+
+    handleBuy(producer) {
+       // this.setState((prevState) => {
+            //this.setState({[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[[producer + "Cost"]]})});
+       
+        this.setState((prevState) => ({[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[producer + "Cost"] + 1}));
+    }
 
     componentWillUnmount() {
         clearInterval(this.intervalTim);
@@ -61,10 +81,11 @@ class CookiesClicker extends React.Component {
       }
 
     render() {
+        //cps = this.state.grandmaAmount*cpsMultiplier.grandma + this.state.cursorAmount*cpsMultiplier.cursor; //It does not need to be computed with every render (to constructor?)
         return (
             <div>
-            <ProducerList />
-            <ProducerInfo />
+            <ProducerList handleBuy={this.handleBuy} grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}/>
+            <ProducerInfo grandmaAmount={this.state.grandmaAmount} grandmaCost={this.state.grandmaCost}/>
                 <form>
                     Cookies amount: <input type="text" id="amount"></input>
                     Cookies per second<input type= "text" id="perSecond"></input>
@@ -73,6 +94,7 @@ class CookiesClicker extends React.Component {
                 <button onClick={addCookies}>Add value</button>
                 <button onClick={getCookies}>Get value</button>
                 <button onClick={updateCookies}>Update value</button>
+                <button onClick={this.cookiesCpsUpdate}>Update cps</button>
                 <p>Cookies amount {this.state.amount}</p>
                 <p>Cookies per second {this.state.perSecond}</p>
             </div>
@@ -87,7 +109,7 @@ class ProducerList extends React.Component {
         return (
             <div>
                 <Cursor />
-                <Grandma />
+                <Grandma  handleBuy={() => this.props.handleBuy("grandma")} grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
                 <Farm />
             </div>
         );
@@ -99,7 +121,7 @@ class ProducerInfo extends React.Component {
         return (
             <div>
                 <CursorInfo />
-                <GrandmaInfo />
+                <GrandmaInfo handleBuy={this.props.handleBuy} grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
                 <FarmInfo />
             </div>
         );
@@ -117,7 +139,7 @@ class Cursor extends React.Component {
 class Grandma extends React.Component {
     render() {
         return (
-            <div><button>Buy Grandma</button></div>
+            <div><button onClick={this.props.handleBuy}>Buy Grandma</button></div>
         );
     }
 }
@@ -141,7 +163,10 @@ class CursorInfo extends React.Component {
 class GrandmaInfo extends React.Component {
     render() {
         return (
-            <div><p>Grandma cost:</p></div>
+            <div>
+            <p>Grandma amount: {this.props.grandmaAmount}</p>
+            <p>Grandma cost: {this.props.grandmaCost}</p>
+            </div>
         );
     }
 }
