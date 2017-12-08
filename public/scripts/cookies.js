@@ -1,11 +1,10 @@
-
 window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
 window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || { READ_WRITE: "readwrite" }; // This line should only be needed if it is needed to support the object's constants for older browsers
 window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
 
 var db;
 var dbSupported = false;
-
+//Check if IndexedDB is supported in browser
 if (!window.indexedDB) {
     window.alert("IndexedDB is not supported or not allowed to run");
 } 
@@ -16,7 +15,7 @@ else {
 
 if (dbSupported) {
     var dbOpen= indexedDB.open("CookieDB", 6);
-
+    //DB upgrading
     dbOpen.onupgradeneeded = function(e) {
         console.log("Upgrading");
         var thisDB = this.result;
@@ -29,10 +28,11 @@ if (dbSupported) {
     dbOpen.onsuccess = function(e) {
         console.log("Success");
         var store = requestDB("CookiesStore", "readwrite");
+        //check if there are cookies in DB, if not- make cookies!
         var getCookies = store.count("cookies");
         getCookies.onsuccess = function() {
             if (getCookies.result === 0){
-                console.log("Nope")
+                console.log("There are no cookies!")
                 var cookies = {
                     id: "cookies",
                     amount: 0,
@@ -50,11 +50,11 @@ if (dbSupported) {
             }
             else console.log("There are cookies!")
         }
-
+        //check if there are producers in DB, if not- create new entry
         var getProducers = store.count("producers");
         getProducers.onsuccess = function() {
             if (getProducers.result === 0){
-                console.log("Nope")
+                console.log("There are no producers")
                 var producers = {
                     id: "producers",
                     cursorAmount: 10,
@@ -165,7 +165,7 @@ function updateCookies(e) {
             }
     }
 }
-
+//Function for updating cookies entry in database 
 function updateCookiesDatabase(id, amount, perSecond, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
@@ -184,7 +184,7 @@ function updateCookiesDatabase(id, amount, perSecond, e) {
         }
     }  
 }
-
+// Function for updating producers entry in database
 function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, mineAmount,
     mineCost, farmAmount, farmCost, e) {
     var store = requestDB("CookiesStore", "readwrite");
@@ -211,6 +211,7 @@ function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, gr
     }  
 }
 
+//Function for restoring cookies info from database
 function pageCookiesRestore(callback) {
         var cookiesRestore;
         var store = requestDB("CookiesStore", "readonly");
@@ -222,6 +223,8 @@ function pageCookiesRestore(callback) {
          }
 }
 
+
+//Function for restoring producers info from database
 function pageProducersRestore(callback) {
     var producersRestore;
     var store = requestDB("CookiesStore", "readonly");
