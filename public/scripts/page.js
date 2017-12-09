@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -11,6 +11,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 requirejs(["scripts/cookies.js"], function (cookies) {});
+requirejs(["scripts/helper/timer.min.js"], function (timer) {}); // https://github.com/turuslan/HackTimer
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
@@ -57,7 +58,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(CookiesClicker, [{
-            key: 'componentDidMount',
+            key: "componentDidMount",
             value: function componentDidMount() {
                 var _this2 = this;
 
@@ -76,7 +77,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         console.log(producers);producersRestore = producers;console.log(producersRestore.amount);
                         that.setState({ cursorAmount: producersRestore.cursorAmount, cursorCost: producersRestore.cursorCost,
                             grandmaAmount: producersRestore.grandmaAmount, grandmaCost: producersRestore.grandmaCost,
-                            bakeryAmount: producersRestore.grandmaAmount, bakeryCost: producersRestore.grandmaCost,
+                            bakeryAmount: producersRestore.bakeryAmount, bakeryCost: producersRestore.bakeryCost,
                             mineAmount: producersRestore.mineAmount, mineCost: producersRestore.mineCost,
                             farmAmount: producersRestore.farmAmount, farmCost: producersRestore.farmCost });
                     });
@@ -96,7 +97,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 }, 3000);
             }
         }, {
-            key: 'cookiesCpsUpdate',
+            key: "cookiesCpsUpdate",
             value: function cookiesCpsUpdate() {
                 var _this3 = this;
 
@@ -105,21 +106,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 });
             }
         }, {
-            key: 'addCookie',
+            key: "addCookie",
             value: function addCookie() {
                 this.setState(function (prevState) {
                     return { amount: prevState.amount + 1 };
                 });
             }
         }, {
-            key: 'spentCookie',
+            key: "spentCookie",
             value: function spentCookie(cost) {
                 this.setState(function (prevState) {
                     return { amount: prevState.amount - cost };
                 });
             }
         }, {
-            key: 'handleBuy',
+            key: "handleBuy",
             value: function handleBuy(producer) {
                 this.setState(function (prevState) {
                     var _ref;
@@ -130,17 +131,17 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 });
             }
         }, {
-            key: 'componentWillUnmount',
+            key: "componentWillUnmount",
             value: function componentWillUnmount() {
                 clearInterval(this.intervalTim);
                 clearInterval(this.intervalCookies);
                 clearInterval(this.intervalProducers);
             }
         }, {
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(Cookie, { addCookie: this.addCookie, cookiesAmount: this.state.amount, cookiesPerSecond: this.state.perSecond }),
                     React.createElement(ProducerList, { handleBuy: this.handleBuy, cookiesAmount: this.state.amount,
@@ -171,26 +172,26 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Cookie, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         { onClick: this.props.addCookie },
-                        'Cookie click!'
+                        "Cookie click!"
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Cookies amount ',
+                        "Cookies amount ",
                         Math.round(this.props.cookiesAmount)
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Cookies per second ',
+                        "Cookies per second ",
                         this.props.cookiesPerSecond
                     )
                 );
@@ -210,12 +211,12 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(ProducerList, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this6 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(Cursor, { handleBuy: function handleBuy() {
                             return _this6.props.handleBuy("cursor");
@@ -249,10 +250,10 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(ProducerInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(CursorInfo, { cursorAmount: this.props.cursorAmount, cursorCost: this.props.cursorCost }),
                     React.createElement(GrandmaInfo, { grandmaAmount: this.props.grandmaAmount, grandmaCost: this.props.grandmaCost }),
@@ -276,21 +277,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Cursor, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this9 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         {
                             disabled: this.props.cookiesAmount < this.props.cursorCost,
                             onClick: function onClick() {
                                 _this9.props.handleBuy("cursor");
                             } },
-                        'Buy Cursor '
+                        "Buy Cursor "
                     )
                 );
             }
@@ -309,21 +310,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Grandma, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this11 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         {
                             disabled: this.props.cookiesAmount < this.props.grandmaCost,
                             onClick: function onClick() {
                                 _this11.props.handleBuy("grandma");
                             } },
-                        'Buy Grandma'
+                        "Buy Grandma"
                     )
                 );
             }
@@ -342,21 +343,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Bakery, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this13 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         {
                             disabled: this.props.cookiesAmount < this.props.bakeryCost,
                             onClick: function onClick() {
                                 _this13.props.handleBuy("bakery");
                             } },
-                        'Buy Bakery'
+                        "Buy Bakery"
                     )
                 );
             }
@@ -375,21 +376,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Mine, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this15 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         {
                             disabled: this.props.cookiesAmount < this.props.mineCost,
                             onClick: function onClick() {
                                 _this15.props.handleBuy("farm");
                             } },
-                        'Buy Mine'
+                        "Buy Mine"
                     )
                 );
             }
@@ -408,21 +409,21 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(Farm, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 var _this17 = this;
 
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'button',
+                        "button",
                         {
                             disabled: this.props.cookiesAmount < this.props.farmCost,
                             onClick: function onClick() {
                                 _this17.props.handleBuy("farm");
                             } },
-                        'Buy Farm'
+                        "Buy Farm"
                     )
                 );
             }
@@ -441,29 +442,29 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(CursorInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Cursor amount: ',
+                        "Cursor amount: ",
                         this.props.cursorAmount
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Cursor cost: ',
+                        "Cursor cost: ",
                         this.props.cursorCost
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Farm cookies production: ',
+                        "Farm cookies production: ",
                         this.props.cursorAmount * cpsMultiplier.cursor,
-                        '/second'
+                        "/second"
                     )
                 );
             }
@@ -482,29 +483,29 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(GrandmaInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Grandma amount: ',
+                        "Grandma amount: ",
                         this.props.grandmaAmount
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Grandma cost: ',
+                        "Grandma cost: ",
                         this.props.grandmaCost
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Grandma cookies production: ',
+                        "Grandma cookies production: ",
                         this.props.grandmaAmount * cpsMultiplier.grandma,
-                        '/second'
+                        "/second"
                     )
                 );
             }
@@ -523,29 +524,29 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(BakeryInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Bakery amount: ',
+                        "Bakery amount: ",
                         this.props.bakeryAmount
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Bakery cost: ',
+                        "Bakery cost: ",
                         this.props.bakeryCost
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Bakery cookies production: ',
+                        "Bakery cookies production: ",
                         this.props.bakeryAmount * cpsMultiplier.bakery,
-                        '/second'
+                        "/second"
                     )
                 );
             }
@@ -564,29 +565,29 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(MineInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Mine amount: ',
+                        "Mine amount: ",
                         this.props.mineAmount
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Mine cost: ',
+                        "Mine cost: ",
                         this.props.mineCost
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Mine cookies production: ',
+                        "Mine cookies production: ",
                         this.props.mineAmount * cpsMultiplier.mine,
-                        '/second'
+                        "/second"
                     )
                 );
             }
@@ -605,29 +606,29 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
         }
 
         _createClass(FarmInfo, [{
-            key: 'render',
+            key: "render",
             value: function render() {
                 return React.createElement(
-                    'div',
+                    "div",
                     null,
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Farm amount: ',
+                        "Farm amount: ",
                         this.props.farmAmount
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Farm cost: ',
+                        "Farm cost: ",
                         this.props.farmCost
                     ),
                     React.createElement(
-                        'p',
+                        "p",
                         null,
-                        'Farm cookies production: ',
+                        "Farm cookies production: ",
                         this.props.farmAmount * cpsMultiplier.farm,
-                        '/second'
+                        "/second"
                     )
                 );
             }
