@@ -1,7 +1,3 @@
-window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB;
-window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction || { READ_WRITE: "readwrite" }; // This line should only be needed if it is needed to support the object's constants for older browsers
-window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
-
 var db;
 var dbSupported = false;
 //Check if IndexedDB is supported in browser
@@ -36,7 +32,7 @@ if (dbSupported) {
                 var cookies = {
                     id: "cookies",
                     amount: 0,
-                    perSecond: 1
+                    perSecond: 0
                 }
                 
                 var addRequest = store.add(cookies);
@@ -168,3 +164,5 @@ function restoreProducersDatabase(callback) {
         callback(producersRestore);
      }
 }
+
+export {restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase}
