@@ -61,6 +61,8 @@ if (dbSupported) {
                     cursorCost: 50,
                     grandmaAmount: 0,
                     grandmaCost: 200,
+                    bakeryAmount: 0,
+                    bakeryCost: 500,
                     mineAmount: 0,
                     mineCost: 1000,
                     farmAmount: 0,
@@ -112,7 +114,7 @@ function updateCookiesDatabase(id, amount, perSecond, e) {
     }  
 }
 // Function for updating producers entry in database
-function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, mineAmount,
+function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, bakeryAmount, bakeryCost, mineAmount,
     mineCost, farmAmount, farmCost, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
@@ -123,6 +125,8 @@ function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, gr
         result.cursorCost = cursorCost;
         result.grandmaAmount = grandmaAmount;
         result.grandmaCost = grandmaCost;
+        result.bakeryAmount = bakeryAmount;
+        result.bakeryCost = bakeryCost;
         result.mineAmount = mineAmount;
         result.mineCost = mineCost;
         result.farmAmount = farmAmount;
