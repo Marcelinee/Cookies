@@ -1,4 +1,5 @@
 requirejs(["scripts/cookies.js"], function(cookies){});
+requirejs(["scripts/helper/timer.min.js"], function(timer){}); // https://github.com/turuslan/HackTimer
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
@@ -54,7 +55,7 @@ class CookiesClicker extends React.Component {
             console.log(producers); producersRestore = producers; console.log(producersRestore.amount);
             that.setState({cursorAmount: producersRestore.cursorAmount, cursorCost: producersRestore.cursorCost,
                            grandmaAmount: producersRestore.grandmaAmount, grandmaCost: producersRestore.grandmaCost,
-                           bakeryAmount: producersRestore.grandmaAmount, bakeryCost: producersRestore.grandmaCost,
+                           bakeryAmount: producersRestore.bakeryAmount, bakeryCost: producersRestore.bakeryCost,
                            mineAmount: producersRestore.mineAmount, mineCost: producersRestore.mineCost,
                            farmAmount: producersRestore.farmAmount, farmCost: producersRestore.farmCost});
             })
@@ -64,7 +65,7 @@ class CookiesClicker extends React.Component {
                                                     
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 3000);
         this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
-        this.state.grandmaAmount, this.state.grandmaCost,this.state.bakeryAmount, this.state.bakeryCost, this.state.mineAmount, this.state.mineCost,
+        this.state.grandmaAmount, this.state.grandmaCost, this.state.bakeryAmount, this.state.bakeryCost, this.state.mineAmount, this.state.mineCost,
         this.state.farmAmount, this.state.farmCost), 3000);
         }
 
