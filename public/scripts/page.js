@@ -11,7 +11,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 requirejs(["scripts/cookies.js"], function (cookies) {});
-requirejs(["scripts/helper/timer.min.js"], function (timer) {}); // https://github.com/turuslan/HackTimer
+//Library for running timers whila card is inactive: 
+//https://github.com/turuslan/HackTimer
+requirejs(["scripts/helper/timer.min.js"], function (timer) {});
 requirejs.config({
     paths: {
         'react': 'https://unpkg.com/react@15.3.2/dist/react',
@@ -36,10 +38,10 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
 
             var _this = _possibleConstructorReturn(this, (CookiesClicker.__proto__ || Object.getPrototypeOf(CookiesClicker)).call(this, props));
 
-            _this.cookiesCpsUpdate = _this.cookiesCpsUpdate.bind(_this);
-            _this.handleBuy = _this.handleBuy.bind(_this);
-            _this.addCookie = _this.addCookie.bind(_this);
-            _this.spentCookie = _this.spentCookie.bind(_this);
+            _this.updateCookiesCPS = _this.updateCookiesCPS.bind(_this);
+            _this.buyProducers = _this.buyProducers.bind(_this);
+            _this.addCookies = _this.addCookies.bind(_this);
+            _this.reduceCookiesAmount = _this.reduceCookiesAmount.bind(_this);
             _this.state = {
                 amount: 0,
                 perSecond: 1,
@@ -56,6 +58,8 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
             };
             return _this;
         }
+        //Restoring and updating values
+
 
         _createClass(CookiesClicker, [{
             key: "componentDidMount",
@@ -66,14 +70,14 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 var cookiesRestore, producersRestore;
 
                 setTimeout(function () {
-                    pageCookiesRestore(function (cookies) {
+                    restoreCookiesDatabase(function (cookies) {
                         console.log(cookies);cookiesRestore = cookies;console.log(cookiesRestore.amount);
                         that.setState({ amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond });
                     });
                 }, 20);
 
                 setTimeout(function () {
-                    pageProducersRestore(function (producers) {
+                    restoreProducersDatabase(function (producers) {
                         console.log(producers);producersRestore = producers;console.log(producersRestore.amount);
                         that.setState({ cursorAmount: producersRestore.cursorAmount, cursorCost: producersRestore.cursorCost,
                             grandmaAmount: producersRestore.grandmaAmount, grandmaCost: producersRestore.grandmaCost,
@@ -88,7 +92,6 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         return { amount: prevState.amount + _this2.state.perSecond / 10 };
                     });
                 }, 100);
-
                 this.intervalCookies = setInterval(function () {
                     return updateCookiesDatabase("cookies", _this2.state.amount, _this2.state.perSecond);
                 }, 3000);
@@ -97,37 +100,43 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 }, 3000);
             }
         }, {
-            key: "cookiesCpsUpdate",
-            value: function cookiesCpsUpdate() {
+            key: "updateCookiesCPS",
+            value: function updateCookiesCPS() {
                 var _this3 = this;
 
                 this.setState(function () {
                     return { perSecond: 1 + _this3.state.cursorAmount * cpsMultiplier.cursor + _this3.state.grandmaAmount * cpsMultiplier.grandma + _this3.state.bakeryAmount * cpsMultiplier.bakery + _this3.state.mineAmount * cpsMultiplier.mine + _this3.state.farmAmount * cpsMultiplier.farm };
                 });
             }
+
+            //Cookie click adder
+
         }, {
-            key: "addCookie",
-            value: function addCookie() {
+            key: "addCookies",
+            value: function addCookies() {
                 this.setState(function (prevState) {
                     return { amount: prevState.amount + 1 };
                 });
             }
+            //
+
         }, {
-            key: "spentCookie",
-            value: function spentCookie(cost) {
+            key: "reduceCookiesAmount",
+            value: function reduceCookiesAmount(cost) {
                 this.setState(function (prevState) {
                     return { amount: prevState.amount - cost };
                 });
             }
         }, {
-            key: "handleBuy",
-            value: function handleBuy(producer) {
+            key: "buyProducers",
+            value: function buyProducers(producer) {
                 this.setState(function (prevState) {
                     var _ref;
 
                     return _ref = {}, _defineProperty(_ref, producer + "Amount", prevState[producer + "Amount"] + 1), _defineProperty(_ref, producer + "Cost", prevState[producer + "Cost"] + 1), _ref;
                 }, function () {
-                    this.cookiesCpsUpdate();this.spentCookie(this.state[producer + "Cost"]);
+                    this.updateCookiesCPS();
+                    this.reduceCookiesAmount(this.state[producer + "Cost"]);
                 });
             }
         }, {
@@ -143,8 +152,8 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 return React.createElement(
                     "div",
                     null,
-                    React.createElement(Cookie, { addCookie: this.addCookie, cookiesAmount: this.state.amount, cookiesPerSecond: this.state.perSecond }),
-                    React.createElement(ProducerList, { handleBuy: this.handleBuy, cookiesAmount: this.state.amount,
+                    React.createElement(Cookie, { addCookies: this.addCookies, cookiesAmount: this.state.amount, cookiesPerSecond: this.state.perSecond }),
+                    React.createElement(ProducerList, { buyProducers: this.buyProducers, cookiesAmount: this.state.amount,
                         cursorAmount: this.state.cursorAmount, cursorCost: this.state.cursorCost,
                         grandmaAmount: this.state.grandmaAmount, grandmaCost: this.state.grandmaCost,
                         bakeryAmount: this.state.bakeryAmount, bakeryCost: this.state.bakeryCost,
@@ -179,7 +188,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                     null,
                     React.createElement(
                         "button",
-                        { onClick: this.props.addCookie },
+                        { onClick: this.props.addCookies },
                         "Cookie click!"
                     ),
                     React.createElement(
@@ -218,20 +227,20 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                 return React.createElement(
                     "div",
                     null,
-                    React.createElement(Cursor, { handleBuy: function handleBuy() {
-                            return _this6.props.handleBuy("cursor");
+                    React.createElement(Cursor, { buyProducers: function buyProducers() {
+                            return _this6.props.buyProducers("cursor");
                         }, cursorAmount: this.props.cursorAmount, cursorCost: this.props.cursorCost, cookiesAmount: this.props.cookiesAmount }),
-                    React.createElement(Grandma, { handleBuy: function handleBuy() {
-                            return _this6.props.handleBuy("grandma");
+                    React.createElement(Grandma, { buyProducers: function buyProducers() {
+                            return _this6.props.buyProducers("grandma");
                         }, grandmaAmount: this.props.grandmaAmount, grandmaCost: this.props.grandmaCost, cookiesAmount: this.props.cookiesAmount }),
-                    React.createElement(Bakery, { handleBuy: function handleBuy() {
-                            return _this6.props.handleBuy("bakery");
+                    React.createElement(Bakery, { buyProducers: function buyProducers() {
+                            return _this6.props.buyProducers("bakery");
                         }, bakeryAmount: this.props.bakeryAmount, bakeryCost: this.props.bakeryCost, cookiesAmount: this.props.cookiesAmount }),
-                    React.createElement(Mine, { handleBuy: function handleBuy() {
-                            return _this6.props.handleBuy("mine");
+                    React.createElement(Mine, { buyProducers: function buyProducers() {
+                            return _this6.props.buyProducers("mine");
                         }, mineAmount: this.props.mineAmount, mineCost: this.props.mineCost, cookiesAmount: this.props.cookiesAmount }),
-                    React.createElement(Farm, { handleBuy: function handleBuy() {
-                            return _this6.props.handleBuy("farm");
+                    React.createElement(Farm, { buyProducers: function buyProducers() {
+                            return _this6.props.buyProducers("farm");
                         }, farmAmount: this.props.farmAmount, farmCost: this.props.farmCost, cookiesAmount: this.props.cookiesAmount })
                 );
             }
@@ -289,7 +298,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         {
                             disabled: this.props.cookiesAmount < this.props.cursorCost,
                             onClick: function onClick() {
-                                _this9.props.handleBuy("cursor");
+                                _this9.props.buyProducers("cursor");
                             } },
                         "Buy Cursor "
                     )
@@ -322,7 +331,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         {
                             disabled: this.props.cookiesAmount < this.props.grandmaCost,
                             onClick: function onClick() {
-                                _this11.props.handleBuy("grandma");
+                                _this11.props.buyProducers("grandma");
                             } },
                         "Buy Grandma"
                     )
@@ -355,7 +364,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         {
                             disabled: this.props.cookiesAmount < this.props.bakeryCost,
                             onClick: function onClick() {
-                                _this13.props.handleBuy("bakery");
+                                _this13.props.buyProducers("bakery");
                             } },
                         "Buy Bakery"
                     )
@@ -388,7 +397,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         {
                             disabled: this.props.cookiesAmount < this.props.mineCost,
                             onClick: function onClick() {
-                                _this15.props.handleBuy("farm");
+                                _this15.props.buyProducers("farm");
                             } },
                         "Buy Mine"
                     )
@@ -421,7 +430,7 @@ requirejs(['react', 'react-dom'], function (React, ReactDOM) {
                         {
                             disabled: this.props.cookiesAmount < this.props.farmCost,
                             onClick: function onClick() {
-                                _this17.props.handleBuy("farm");
+                                _this17.props.buyProducers("farm");
                             } },
                         "Buy Farm"
                     )

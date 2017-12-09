@@ -55,6 +55,8 @@ if (dbSupported) {
         getProducers.onsuccess = function() {
             if (getProducers.result === 0){
                 console.log("There are no producers")
+
+                //Base producers values
                 var producers = {
                     id: "producers",
                     cursorAmount: 0,
@@ -143,7 +145,7 @@ function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, gr
 }
 
 //Function for restoring cookies info from database
-function pageCookiesRestore(callback) {
+function restoreCookiesDatabase(callback) {
         var cookiesRestore;
         var store = requestDB("CookiesStore", "readonly");
 
@@ -156,7 +158,7 @@ function pageCookiesRestore(callback) {
 
 
 //Function for restoring producers info from database
-function pageProducersRestore(callback) {
+function restoreProducersDatabase(callback) {
     var producersRestore;
     var store = requestDB("CookiesStore", "readonly");
 
