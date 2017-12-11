@@ -1,12 +1,7 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-//Library for running timers whila card is inactive: 
-//https://github.com/turuslan/HackTimer
-import "./timer.min.js"
-
-import "normalize-css/normalize.css"
-import "./styles/styles.scss"
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './timer.min.js';
+import './cookies.js'
 
 import CookiesClicker from "./components/CookiesClicker";
 import ProducerList from "./components/ProducerList";
@@ -23,4 +18,4 @@ import MineInfo from "./components/MineInfo"
 import Farm from "./components/Farm";
 import FarmInfo from "./components/FarmInfo";
 
-ReactDOM.render(<CookiesClicker />, document.getElementById('cookies'));
+ReactDOM.render(<CookiesClicker />, document.getElementById('cookies'))
