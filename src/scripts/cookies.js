@@ -1,5 +1,6 @@
 var db;
 var dbSupported = false;
+import * as cnt from "../components/constants.js"
 //Check if IndexedDB is supported in browser
 if (!window.indexedDB) {
     window.alert("IndexedDB is not supported or not allowed to run");
@@ -56,21 +57,22 @@ if (dbSupported) {
                 var producers = {
                     id: "producers",
                     cursorAmount: 0,
-                    cursorCost: 50,
+                    cursorCost: Math.exp(0) * cnt.costMultiplier.cursor,
                     grandmaAmount: 0,
-                    grandmaCost: 200,
+                    grandmaCost: Math.exp(0) * cnt.costMultiplier.grandma,
                     bakeryAmount: 0,
-                    bakeryCost: 500,
+                    bakeryCost: Math.exp(0) * cnt.costMultiplier.bakery,
                     mineAmount: 0,
-                    mineCost: 1000,
+                    mineCost: Math.exp(0) * cnt.costMultiplier.mine,
                     farmAmount: 0,
-                    farmCost: 10000
+                    farmCost: Math.exp(0) * cnt.costMultiplier.farm
                 }
                 
                 var addRequest = store.add(producers);
                 
                 addRequest.onerror = function(e) {
                     console.log("Producers not added");
+                    var addRequest = store.add(producers);
                 }
                 addRequest.onsuccess = function(e) {
                     console.log("Producers added");

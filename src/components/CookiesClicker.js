@@ -23,7 +23,6 @@ export default class CookiesClicker extends React.Component {
         this.updateCookiesCPS = this.updateCookiesCPS.bind(this);
         this.buyProducers = this.buyProducers.bind(this);
         this.addCookies = this.addCookies.bind(this);
-        this.reduceCookiesAmount = this.reduceCookiesAmount.bind(this);
         this.state = {
                 amount: 0,
                 perSecond : 0, 
@@ -77,18 +76,18 @@ export default class CookiesClicker extends React.Component {
 
     //Cookie click adder
     addCookies() {
-        this.setState((prevState) => {return {amount: prevState.amount + 1}});
+        this.setState((prevState) => {return {amount: prevState.amount + 10}});
     }
     //
-    reduceCookiesAmount(cost) {
-        this.setState((prevState) => {return {amount: prevState.amount - cost}});
-    }
-
+ 
     buyProducers(producer) {
-        this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, [producer + "Cost"]: prevState[producer + "Cost"] + 1}}, 
+        this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 
+                                     amount: prevState.amount - prevState[producer + "Cost"], 
+                                     [producer + "Cost"]: Math.round(Math.exp(prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])};},
         function() {
+            console.log(this.state.cursorCost);
             this.updateCookiesCPS(); 
-            this.reduceCookiesAmount(this.state[producer + "Cost"]);
+
         });
     }
 
