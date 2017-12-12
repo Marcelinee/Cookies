@@ -76,7 +76,7 @@ export default class CookiesClicker extends React.Component {
 
     //Cookie click adder
     addCookies() {
-        this.setState((prevState) => {return {amount: prevState.amount + 10}});
+        this.setState((prevState) => {return {amount: prevState.amount + 1}});
     }
     //
  
