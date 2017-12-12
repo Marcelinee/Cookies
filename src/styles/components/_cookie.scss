@@ -1,0 +1,40 @@
+.cookie {
+    width: 33.33%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cookieDiv img {
+    max-width: 100%;
+    height: auto;
+    user-select: none;
+    width: 400px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-position:50% 50%; 
+    
+}
+.imgbutton{
+    background: url("http://svgshare.com/i/4HX.svg");
+    width: 400px;
+    height: 400px;
+}
+
+.cookieDiv {
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    height: 400px;    
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cookieInfo {
+    display: block;
+}
+area {
+    display:block;
+    outline:none;
+}

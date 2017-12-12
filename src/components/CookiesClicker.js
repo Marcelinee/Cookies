@@ -1,10 +1,20 @@
 import React from 'react'
 
+import ProducerList from "./ProducerList";
+import ProducerInfo from "./ProducerInfo";
 import Cookie from "./Cookie"
-import ProducerList from "./ProducerList"
-import ProducerInfo from "./ProducerInfo"
+import Cursor from "./Cursor";
+import CursorInfo from "./CursorInfo"
+import Grandma from "./Grandma";
+import GrandmaInfo from "./GrandmaInfo"
+import Bakery from "./Bakery";
+import BakeryInfo from "./BakeryInfo"
+import Mine from "./Mine";
+import MineInfo from "./MineInfo"
+import Farm from "./Farm";
+import FarmInfo from "./FarmInfo";
 
-import {restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase} from "../cookies.js"
+import {restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase} from "../scripts/cookies.js"
 import * as cnt from "./constants.js"
 
 export default class CookiesClicker extends React.Component {
@@ -90,8 +100,7 @@ export default class CookiesClicker extends React.Component {
 
     render() {
         return (
-            <div>
-            <Cookie addCookies={this.addCookies} cookiesAmount={this.state.amount} cookiesPerSecond={this.state.perSecond}/>
+            <div className="container">
 
             <ProducerList buyProducers={this.buyProducers} cookiesAmount={this.state.amount}
                         cursorAmount={this.state.cursorAmount} cursorCost={this.state.cursorCost}
@@ -105,6 +114,9 @@ export default class CookiesClicker extends React.Component {
                             bakeryAmount={this.state.bakeryAmount} bakeryCost={this.state.bakeryCost}
                             mineAmount={this.state.mineAmount} mineCost={this.state.mineCost}
                             farmAmount={this.state.farmAmount} farmCost={this.state.farmCost}/>
+
+            <Cookie addCookies={this.addCookies} cookiesAmount={this.state.amount} cookiesPerSecond={this.state.perSecond}/>
+            
             </div>
         );
 
