@@ -8,5 +8,14 @@ import "./styles/styles.scss";
 
 import CookiesClicker from "./components/CookiesClicker";
 
+function run() {
+    ReactDOM.render(<CookiesClicker />, document.getElementById('cookieclicker'))
+}
 
-ReactDOM.render(<CookiesClicker />, document.getElementById('cookieclicker'))
+const loadedStates = ['complete', 'loaded', 'interactive'];
+
+if (loadedStates.includes(document.readyState) && document.body) {
+  run();
+} else {
+  window.addEventListener('DOMContentLoaded', run, false);
+}
