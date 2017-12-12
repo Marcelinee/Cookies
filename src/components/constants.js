@@ -8,10 +8,10 @@ const cpsMultiplier = {
    }
 const costMultiplier = {
     cursor: 15,
-    grandma: 50,
-    bakery: 100,
-    mine: 200,
-    farm: 500
+    grandma: 100,
+    bakery: 500,
+    mine: 1000,
+    farm: 2000
 }   
 
    export {cpsMultiplier, costMultiplier}

@@ -45,14 +45,14 @@ export default class CookiesClicker extends React.Component {
 
         setTimeout(function() {
             restoreCookiesDatabase(function(cookies) {
-            console.log(cookies); cookiesRestore = cookies; console.log(cookiesRestore.amount);
+            cookiesRestore = cookies;
             that.setState({amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond});
             })
         }, 20);
 
         setTimeout(function() {
             restoreProducersDatabase(function(producers) {
-            console.log(producers); producersRestore = producers; console.log(producersRestore.amount);
+            producersRestore = producers;
             that.setState({cursorAmount: producersRestore.cursorAmount, cursorCost: producersRestore.cursorCost,
                            grandmaAmount: producersRestore.grandmaAmount, grandmaCost: producersRestore.grandmaCost,
                            bakeryAmount: producersRestore.bakeryAmount, bakeryCost: producersRestore.bakeryCost,

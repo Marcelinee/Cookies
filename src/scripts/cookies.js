@@ -72,7 +72,6 @@ if (dbSupported) {
                 
                 addRequest.onerror = function(e) {
                     console.log("Producers not added");
-                    var addRequest = store.add(producers);
                 }
                 addRequest.onsuccess = function(e) {
                     console.log("Producers added");
