@@ -1,5 +1,5 @@
 import React from 'react'
-import * as cpsMultiplier from "./constants.js"
+import * as cnt from "./constants.js"
 
 export default class BakeryInfo extends React.Component {
     render() {
@@ -7,7 +7,7 @@ export default class BakeryInfo extends React.Component {
             <div>
             <p>Bakery amount: {this.props.bakeryAmount}</p>
             <p>Bakery cost: {this.props.bakeryCost}</p>
-            <p>Bakery cookies production: {this.props.bakeryAmount * cpsMultiplier.cpsMultiplier.bakery}/second</p>
+            <p>Bakery cookies production: {this.props.bakeryAmount * cnt.cpsMultiplier.bakery}/second</p>
             </div>
         );
     }
