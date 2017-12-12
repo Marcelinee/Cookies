@@ -48,7 +48,7 @@ export default class CookiesClicker extends React.Component {
             cookiesRestore = cookies;
             that.setState({amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond});
             })
-        }, 20);
+        }, 50);
 
         setTimeout(function() {
             restoreProducersDatabase(function(producers) {
@@ -59,7 +59,7 @@ export default class CookiesClicker extends React.Component {
                            mineAmount: producersRestore.mineAmount, mineCost: producersRestore.mineCost,
                            farmAmount: producersRestore.farmAmount, farmCost: producersRestore.farmCost});
             })
-        }, 50);
+        }, 100);
  
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 3000);

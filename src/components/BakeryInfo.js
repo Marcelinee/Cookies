@@ -5,9 +5,16 @@ export default class BakeryInfo extends React.Component {
     render() {
         return (
             <div className="producerInfo">
-            <p>Bakery amount: {this.props.bakeryAmount}</p>
-            <p>Bakery cost: {this.props.bakeryCost}</p>
-            <p>Bakery cookies production: {this.props.bakeryAmount * cnt.cpsMultiplier.bakery}/second</p>
+            <table>
+            <tr>
+                <td className="name">BAKERY</td>
+                <td>Amount: {this.props.bakeryAmount}</td>
+            </tr>
+            <tr>
+                <td>Cost: {this.props.bakeryCost}</td>
+                <td>Cookies production: {this.props.bakeryAmount * cnt.cpsMultiplier.bakery}/s</td>                
+            </tr>
+        </table>
             </div>
         );
     }
