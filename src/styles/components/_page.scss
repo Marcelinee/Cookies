@@ -2,5 +2,12 @@
 	display: flex;
     flex-wrap: wrap;
     user-select: none;
-    padding-top: 10px
+    font-family: 'Annie Use Your Telescope', cursive;
+    height: 100%;
+}
+
+body {
+    background-image: url("http://www.pptback.com/uploads/light-beige-frames-backgrounds-powerpoint.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
