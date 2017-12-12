@@ -6,15 +6,17 @@ export default class FarmInfo extends React.Component {
         return (
             <div className="producerInfo">
                 <table>
-                    <tr>
-                        <td className="name">FARM</td>
-                        <td>Amount: {this.props.farmAmount}</td>
-                    </tr>
-                    <tr>
-                        <td>Cost: {this.props.farmCost}</td>
-                        <td>Cookies production: {this.props.farmAmount * cnt.cpsMultiplier.farm}/s</td>                
-                    </tr>
-                </table>
+                    <tbody>
+                        <tr>
+                            <td className="name">FARM</td>
+                            <td>Amount: {this.props.farmAmount}</td>
+                        </tr>
+                        <tr>
+                            <td>Cost: {this.props.farmCost}</td>
+                            <td>Cookies production: {this.props.farmAmount * cnt.cpsMultiplier.farm}/s</td>                
+                        </tr>
+                    </tbody>
+                </table>            
             </div>
         );
     }
