@@ -1,5 +1,5 @@
 .cookie {
-    width: 33.33%;
+    width: 30%;
     margin-top: auto;
     margin-bottom: auto;
     text-align: center;
@@ -7,7 +7,7 @@
 }
 
 .cookieDiv img {
-    max-width: 90%;
+    max-width: 70%;
     height: auto;
     user-select: none;
     display: block;
@@ -38,11 +38,11 @@
 .cookieInfo {
     display: block;
     margin:auto;
-    font-size: 5vh;
     padding-top: 10px;
 }
 
 .cookieText {
+    font-size: 6vmin;
     display: block;
     margin-top: auto;
     margin-bottom: auto;

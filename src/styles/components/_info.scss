@@ -1,20 +1,46 @@
+
+
+
+@media only screen and (max-width: 300px){
+    td {
+        font-size: 3vmin;
+    }
+}
+@media only screen and (min-width: 301px) and (max-width:750px){
+    td {
+        font-size: 3vmin;
+    }
+    table {
+        height: 13vh;
+    }
+}
+@media only screen and (min-width: 751px) {
+    td {
+        font-size: 4vmin;
+    }
+    table {
+        height: 11.5vh;
+    }
+}
+
 .info {
-    width: 33.33%;
-    margin-top: auto;
-    margin-bottom: auto;
-}
-
-.infoContainer {
+    width: 40%;
     margin: auto;
-
 }
 
-.producerInfo {
-    margin-top: auto;
-    margin-bottom: auto;
+td {
+    width: 50%;
+    padding-left: 10px;
 }
 
-p {
-    margin: auto;
-    font-size: 4.5vh;
+table {
+
+    border-style: solid;
+    margin: 5px;
+    border-color: $color;
+    width: 100%;
+}
+
+.name {
+    font-weight: 900;
 }
