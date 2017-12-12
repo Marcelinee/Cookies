@@ -1,38 +1,53 @@
 .cookie {
     width: 33.33%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    text-align: center;
+
 }
 
 .cookieDiv img {
-    max-width: 100%;
+    max-width: 90%;
     height: auto;
     user-select: none;
-    width: 400px;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    background-position:50% 50%; 
-    
+    margin-top: auto;
+    margin-bottom: auto; 
 }
+
 .imgbutton{
     background: url("http://svgshare.com/i/4HX.svg");
     width: 400px;
     height: 400px;
+    
 }
 
 .cookieDiv {
     max-width: 100%;
     position: relative;
     width: 100%;
-    height: 400px;    
+    height: auto;   
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+
+    margin:auto;
+    
 }
 
 .cookieInfo {
     display: block;
+    margin:auto;
+    font-size: 5vh;
+    padding-top: 10px;
+}
+
+.cookieText {
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: auto;
+    margin-left: auto;
 }
 area {
     display:block;
