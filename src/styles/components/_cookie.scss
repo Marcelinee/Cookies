@@ -11,17 +11,7 @@
     height: auto;
     user-select: none;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: auto;
-    margin-bottom: auto; 
-}
-
-.imgbutton{
-    background: url("http://svgshare.com/i/4HX.svg");
-    width: 400px;
-    height: 400px;
-    
+    margin: auto;
 }
 
 .cookieDiv {
@@ -49,7 +39,15 @@
     margin-right: auto;
     margin-left: auto;
 }
+map {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto; 
+}
 area {
     display:block;
+    position: absolute;
     outline:none;
 }
