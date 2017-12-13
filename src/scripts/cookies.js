@@ -33,7 +33,7 @@ if (dbSupported) {
                 var cookies = {
                     id: "cookies",
                     amount: 0,
-                    perSecond: 0
+  //                  perSecond: 0
                 }
                 
                 var addRequest = store.add(cookies);
@@ -57,15 +57,15 @@ if (dbSupported) {
                 var producers = {
                     id: "producers",
                     cursorAmount: 0,
-                    cursorCost: Math.exp(0) * cnt.costMultiplier.cursor,
+                    //cursorCost: Math.exp(0) * cnt.costMultiplier.cursor,
                     grandmaAmount: 0,
-                    grandmaCost: Math.exp(0) * cnt.costMultiplier.grandma,
+                   // grandmaCost: Math.exp(0) * cnt.costMultiplier.grandma,
                     bakeryAmount: 0,
-                    bakeryCost: Math.exp(0) * cnt.costMultiplier.bakery,
+                   // bakeryCost: Math.exp(0) * cnt.costMultiplier.bakery,
                     mineAmount: 0,
-                    mineCost: Math.exp(0) * cnt.costMultiplier.mine,
+                   // mineCost: Math.exp(0) * cnt.costMultiplier.mine,
                     farmAmount: 0,
-                    farmCost: Math.exp(0) * cnt.costMultiplier.farm
+                   // farmCost: Math.exp(0) * cnt.costMultiplier.farm
                 }
                 
                 var addRequest = store.add(producers);
@@ -94,14 +94,14 @@ function requestDB(dbName, type) {
 }
 
 //Function for updating cookies entry in database 
-function updateCookiesDatabase(id, amount, perSecond, e) {
+function updateCookiesDatabase(id, amount, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
 
     getRequest.onsuccess = function(e) {
         var result = this.result;
         result.amount = amount;
-        result.perSecond = perSecond;
+        //result.perSecond = perSecond;
         //console.log(result);
         var requestUpdate = store.put(result);
         requestUpdate.onerror = function(e) {
@@ -113,23 +113,23 @@ function updateCookiesDatabase(id, amount, perSecond, e) {
     }  
 }
 // Function for updating producers entry in database
-function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, bakeryAmount, bakeryCost, mineAmount,
-    mineCost, farmAmount, farmCost, e) {
+function updateProducersDatabase(id, cursorAmount, grandmaAmount, bakeryAmount, mineAmount,
+     farmAmount, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
 
     getRequest.onsuccess = function(e) {
         var result = this.result;
         result.cursorAmount = cursorAmount;
-        result.cursorCost = cursorCost;
+       // result.cursorCost = cursorCost;
         result.grandmaAmount = grandmaAmount;
-        result.grandmaCost = grandmaCost;
+      //  result.grandmaCost = grandmaCost;
         result.bakeryAmount = bakeryAmount;
-        result.bakeryCost = bakeryCost;
+       // result.bakeryCost = bakeryCost;
         result.mineAmount = mineAmount;
-        result.mineCost = mineCost;
+       // result.mineCost = mineCost;
         result.farmAmount = farmAmount;
-        result.farmCost = farmCost;
+       // result.farmCost = farmCost;
         console.log(result);
         var requestUpdate = store.put(result);
         requestUpdate.onerror = function(e) {

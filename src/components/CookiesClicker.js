@@ -23,6 +23,7 @@ export default class CookiesClicker extends React.Component {
         this.updateCookiesCPS = this.updateCookiesCPS.bind(this);
         this.buyProducers = this.buyProducers.bind(this);
         this.addCookies = this.addCookies.bind(this);
+        this.updateProducersCost = this.updateProducersCost.bind(this);
         this.state = {
                 amount: 0,
                 perSecond : 0, 
@@ -46,32 +47,43 @@ export default class CookiesClicker extends React.Component {
         setTimeout(function() {
             restoreCookiesDatabase(function(cookies) {
             cookiesRestore = cookies;
-            that.setState({amount: cookiesRestore.amount, perSecond: cookiesRestore.perSecond});
+            that.setState({amount: cookiesRestore.amount});//, perSecond: cookiesRestore.perSecond
             })
         }, 50);
 
         setTimeout(function() {
             restoreProducersDatabase(function(producers) {
             producersRestore = producers;
-            that.setState({cursorAmount: producersRestore.cursorAmount, cursorCost: producersRestore.cursorCost,
-                           grandmaAmount: producersRestore.grandmaAmount, grandmaCost: producersRestore.grandmaCost,
-                           bakeryAmount: producersRestore.bakeryAmount, bakeryCost: producersRestore.bakeryCost,
-                           mineAmount: producersRestore.mineAmount, mineCost: producersRestore.mineCost,
-                           farmAmount: producersRestore.farmAmount, farmCost: producersRestore.farmCost});
-            })
+            that.setState({cursorAmount: producersRestore.cursorAmount,// cursorCost: producersRestore.cursorCost,
+                           grandmaAmount: producersRestore.grandmaAmount,// grandmaCost: producersRestore.grandmaCost,
+                           bakeryAmount: producersRestore.bakeryAmount, //bakeryCost: producersRestore.bakeryCost,
+                           mineAmount: producersRestore.mineAmount,// mineCost: producersRestore.mineCost,
+                           farmAmount: producersRestore.farmAmount});//, farmCost: producersRestore.farmCost
+             that.updateCookiesCPS(); that.updateProducersCost();});
+
         }, 100);
  
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
-        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount, this.state.perSecond), 3000);
-        this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount, this.state.cursorCost,
-            this.state.grandmaAmount, this.state.grandmaCost, this.state.bakeryAmount, this.state.bakeryCost, this.state.mineAmount, this.state.mineCost,
-            this.state.farmAmount, this.state.farmCost), 3000);
+        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount), 3000);
+        this.intervalProducers = setInterval(() => updateProducersDatabase("producers", this.state.cursorAmount,
+            this.state.grandmaAmount, this.state.bakeryAmount, this.state.mineAmount, 
+            this.state.farmAmount), 3000);
+        
         }
 
     updateCookiesCPS() {
         this.setState(() => {return {perSecond: (this.state.cursorAmount * cnt.cpsMultiplier.cursor + this.state.grandmaAmount * cnt.cpsMultiplier.grandma
                                                 + this.state.bakeryAmount * cnt.cpsMultiplier.bakery  + this.state.mineAmount * cnt.cpsMultiplier.mine 
                                                 + this.state.farmAmount * cnt.cpsMultiplier.farm)}});
+    }
+
+    updateProducersCost() { 
+        this.setState(() =>  {console.log(this.state); return { 
+        cursorCost: Math.round(Math.exp(this.state.cursorAmount) * cnt.costMultiplier.cursor),
+        grandmaCost: Math.round(Math.exp(this.state.grandmaAmount) * cnt.costMultiplier.grandma),
+        bakeryCost: Math.round(Math.exp(this.state.bakeryAmount) * cnt.costMultiplier.bakery),
+        mineCost: Math.round(Math.exp(this.state.mineAmount) * cnt.costMultiplier.mine),
+        farmCost: Math.round(Math.exp(this.state.farmAmount) * cnt.costMultiplier.farm)}})
     }
 
     //Cookie click adder
@@ -85,9 +97,7 @@ export default class CookiesClicker extends React.Component {
                                      amount: prevState.amount - prevState[producer + "Cost"], 
                                      [producer + "Cost"]: Math.round(Math.exp(prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])};},
         function() {
-            console.log(this.state.cursorCost);
             this.updateCookiesCPS(); 
-
         });
     }
 
