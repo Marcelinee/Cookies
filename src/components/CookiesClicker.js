@@ -90,7 +90,6 @@ export default class CookiesClicker extends React.Component {
     addCookies() {
         this.setState((prevState) => {return {amount: prevState.amount + 1}});
     }
-    //
  
     buyProducers(producer) {
         this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 

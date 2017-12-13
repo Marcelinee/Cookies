@@ -45,7 +45,7 @@ if (dbSupported) {
                             console.log("Cookies added");
                         }
             }
-            else console.log("There are cookies!")
+            else console.log("Cookies found!")
         }
         //check if there are producers in DB, if not- create new entry
         var getProducers = store.count("producers");
