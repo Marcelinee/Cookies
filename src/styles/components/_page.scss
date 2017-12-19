@@ -1,13 +1,32 @@
 @media only screen and (max-width:624px){
     .container{
-        font-weight: 800;
+        font-weight: bolder;
     }
 
 }
 @media only screen and (min-width: 625px) {
     .container{
-        font-weight: 600;
+        font-weight: bold;
     }
+}
+html, body {
+    height: 100%;
+    width: 100%
+}
+
+html {
+    display: table;
+    margin: auto;
+}
+
+body {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.cookieclicker {
+    display: block;
+    margin: auto;
 }
 .container {
 	display: flex;
