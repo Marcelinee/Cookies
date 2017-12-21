@@ -7,13 +7,8 @@ import Cursor from "./Cursor";
 import CursorInfo from "./CursorInfo"
 import Grandma from "./Grandma";
 import GrandmaInfo from "./GrandmaInfo"
-<<<<<<< HEAD
-import Bakery from "./Bakery";
-import BakeryInfo from "./BakeryInfo"
-=======
 import Factory from "./Factory";
 import FactoryInfo from "./FactoryInfo"
->>>>>>> 64ecc13... Fixed displaying first cookie
 import Mine from "./Mine";
 import MineInfo from "./MineInfo"
 import Farm from "./Farm";
@@ -28,10 +23,7 @@ export default class CookiesClicker extends React.Component {
         this.updateCookiesCPS = this.updateCookiesCPS.bind(this);
         this.buyProducers = this.buyProducers.bind(this);
         this.addCookies = this.addCookies.bind(this);
-<<<<<<< HEAD
-=======
         this.updateProducersCost = this.updateProducersCost.bind(this);
->>>>>>> 64ecc13... Fixed displaying first cookie
         this.state = {
                 amount: 0,
                 perSecond : 0, 
@@ -39,13 +31,8 @@ export default class CookiesClicker extends React.Component {
                 cursorCost: 0,
                 grandmaAmount: 0,
                 grandmaCost: 0,
-<<<<<<< HEAD
-                bakeryAmount: 0,
-                bakeryCost: 0,
-=======
                 factoryAmount: 0,
                 factoryCost: 0,
->>>>>>> 64ecc13... Fixed displaying first cookie
                 mineAmount: 0,
                 mineCost: 0,
                 farmAmount: 0,

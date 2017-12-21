@@ -33,10 +33,6 @@ if (dbSupported) {
                 var cookies = {
                     id: "cookies",
                     amount: 0,
-<<<<<<< HEAD:src/scripts/cookies.js
-                    perSecond: 0
-=======
->>>>>>> 64ecc13... Fixed displaying first cookie:src/scripts/cookies.js
                 }
                 
                 var addRequest = store.add(cookies);
@@ -60,22 +56,10 @@ if (dbSupported) {
                 var producers = {
                     id: "producers",
                     cursorAmount: 0,
-<<<<<<< HEAD:src/scripts/cookies.js
-                    cursorCost: Math.exp(0) * cnt.costMultiplier.cursor,
-                    grandmaAmount: 0,
-                    grandmaCost: Math.exp(0) * cnt.costMultiplier.grandma,
-                    bakeryAmount: 0,
-                    bakeryCost: Math.exp(0) * cnt.costMultiplier.bakery,
-                    mineAmount: 0,
-                    mineCost: Math.exp(0) * cnt.costMultiplier.mine,
-                    farmAmount: 0,
-                    farmCost: Math.exp(0) * cnt.costMultiplier.farm
-=======
                     grandmaAmount: 0,
                     factoryAmount: 0,
                     mineAmount: 0,
                     farmAmount: 0,
->>>>>>> 64ecc13... Fixed displaying first cookie:src/scripts/cookies.js
                 }
                 
                 var addRequest = store.add(producers);
