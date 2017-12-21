@@ -33,7 +33,10 @@ if (dbSupported) {
                 var cookies = {
                     id: "cookies",
                     amount: 0,
+<<<<<<< HEAD:src/scripts/cookies.js
                     perSecond: 0
+=======
+>>>>>>> 64ecc13... Fixed displaying first cookie:src/scripts/cookies.js
                 }
                 
                 var addRequest = store.add(cookies);
@@ -57,6 +60,7 @@ if (dbSupported) {
                 var producers = {
                     id: "producers",
                     cursorAmount: 0,
+<<<<<<< HEAD:src/scripts/cookies.js
                     cursorCost: Math.exp(0) * cnt.costMultiplier.cursor,
                     grandmaAmount: 0,
                     grandmaCost: Math.exp(0) * cnt.costMultiplier.grandma,
@@ -66,6 +70,12 @@ if (dbSupported) {
                     mineCost: Math.exp(0) * cnt.costMultiplier.mine,
                     farmAmount: 0,
                     farmCost: Math.exp(0) * cnt.costMultiplier.farm
+=======
+                    grandmaAmount: 0,
+                    factoryAmount: 0,
+                    mineAmount: 0,
+                    farmAmount: 0,
+>>>>>>> 64ecc13... Fixed displaying first cookie:src/scripts/cookies.js
                 }
                 
                 var addRequest = store.add(producers);
@@ -94,15 +104,13 @@ function requestDB(dbName, type) {
 }
 
 //Function for updating cookies entry in database 
-function updateCookiesDatabase(id, amount, perSecond, e) {
+function updateCookiesDatabase(id, amount, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
 
     getRequest.onsuccess = function(e) {
         var result = this.result;
         result.amount = amount;
-        result.perSecond = perSecond;
-        //console.log(result);
         var requestUpdate = store.put(result);
         requestUpdate.onerror = function(e) {
             console.log("Error");
@@ -113,23 +121,18 @@ function updateCookiesDatabase(id, amount, perSecond, e) {
     }  
 }
 // Function for updating producers entry in database
-function updateProducersDatabase(id, cursorAmount, cursorCost, grandmaAmount, grandmaCost, bakeryAmount, bakeryCost, mineAmount,
-    mineCost, farmAmount, farmCost, e) {
+function updateProducersDatabase(id, cursorAmount, grandmaAmount, factoryAmount, mineAmount,
+     farmAmount, e) {
     var store = requestDB("CookiesStore", "readwrite");
     var getRequest = store.get(id);
 
     getRequest.onsuccess = function(e) {
         var result = this.result;
         result.cursorAmount = cursorAmount;
-        result.cursorCost = cursorCost;
         result.grandmaAmount = grandmaAmount;
-        result.grandmaCost = grandmaCost;
-        result.bakeryAmount = bakeryAmount;
-        result.bakeryCost = bakeryCost;
+        result.factoryAmount = factoryAmount;
         result.mineAmount = mineAmount;
-        result.mineCost = mineCost;
         result.farmAmount = farmAmount;
-        result.farmCost = farmCost;
         console.log(result);
         var requestUpdate = store.put(result);
         requestUpdate.onerror = function(e) {

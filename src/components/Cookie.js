@@ -6,29 +6,32 @@ export default class Cookie extends React.Component {
         this.imgCoords = this.imgCoords.bind(this);
         this.handleResize = this.handleResize.bind(this);
         this.state = {
-            coords: ""
+            coords: "200,200,200"
         }
     }
+
     clickCookie() {
         let cookieImg = document.getElementById("cookieImg");
         cookieImg.style.transform = "scale(0.95,0.95)";
         setTimeout(function() {cookieImg.style.transform = "scale(1,1)";}, 50);
     }
 
+    //Compute cookie size
     imgCoords() {
            let wid = (parseFloat(window.getComputedStyle(document.getElementById("cookieImg")).getPropertyValue("height")))/2;
            let hei = (parseFloat(window.getComputedStyle(document.getElementById("cookieImg")).getPropertyValue("width")))/2;
            let rad = wid;
+           console.log(wid, hei, rad);
            return `${wid},${hei},${rad}`
     }
 
+    //Change coords for area tag 
     handleResize() {
         this.setState(() => {return {coords: this.imgCoords()}});
     }
 
     componentDidMount() {
         var that = this;
-        this.handleResize();
         window.addEventListener('resize', function(){that.handleResize();}, true);
     }
 
@@ -36,17 +39,18 @@ export default class Cookie extends React.Component {
         return (
             <div className="cookie">
                 <div id="cookieContainer">
-                <div className= "cookieDiv">
-                    <img id="cookieImg"src="http://moziru.com/images/biscuit-clipart-circle-12.png" className="cookieImg" useMap="#cookieMap"/>
-                    <map name="cookieMap">
-                        <area shape="circle"  coords={this.state.coords} onClick={() => {this.props.addCookies(), this.clickCookie()}} className="click"/>
-                    </map>
-                </div>
+                    <div className= "cookieDiv">
+                        <img id="cookieImg" src={(this.props.cookiesAmount === 0) ? "images/cookie0.png" : "images/cookie.png"} className="cookieImg" useMap="#cookieMap"/>
+                            <map name="cookieMap">
+                                <area shape="circle"  coords={this.state.coords} onClick={() => {this.props.addCookies(), this.clickCookie()}} className="click"/>
+                            </map>
+                    </div>
+                    
                     <div className="cookieInfo">
                         <p className="cookieText">Cookies amount {Math.round(this.props.cookiesAmount)}</p>
                         <p className="cookieText">Cookies per second {this.props.cookiesPerSecond}</p>
                     </div>
-                    </div>
+                </div>
             </div>
         )
     }
