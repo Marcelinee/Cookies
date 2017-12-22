@@ -13,8 +13,8 @@ export default class ProducerInfo extends React.Component {
             <div className="infoContainer">
                 <CursorInfo cursorAmount={this.props.cursorAmount} cursorCost={this.props.cursorCost} />
                 <GrandmaInfo grandmaAmount={this.props.grandmaAmount} grandmaCost={this.props.grandmaCost}/>
-                <MineInfo mineAmount={this.props.mineAmount} mineCost={this.props.mineCost}/>
                 <FarmInfo farmAmount={this.props.farmAmount} farmCost={this.props.farmCost}/>
+                <MineInfo mineAmount={this.props.mineAmount} mineCost={this.props.mineCost}/>
                 <FactoryInfo factoryAmount={this.props.factoryAmount} factoryCost={this.props.factoryCost} />
             </div>
             </div>

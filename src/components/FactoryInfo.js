@@ -13,7 +13,7 @@ export default class FactoryInfo extends React.Component {
                         </tr>
                         <tr>
                             <td>Cost: {this.props.factoryCost}</td>
-                            <td>Cookies production: {this.props.factoryAmount * cnt.cpsMultiplier.factory}/s</td>                
+                            <td>Cookies production: {this.props.factoryAmount * Math.round(cnt.cpsMultiplier.factory*100)/100}/s</td>                
                         </tr>
                     </tbody>
                 </table>

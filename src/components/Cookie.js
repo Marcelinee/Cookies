@@ -21,7 +21,6 @@ export default class Cookie extends React.Component {
            let wid = (parseFloat(window.getComputedStyle(document.getElementById("cookieImg")).getPropertyValue("height")))/2;
            let hei = (parseFloat(window.getComputedStyle(document.getElementById("cookieImg")).getPropertyValue("width")))/2;
            let rad = wid;
-           console.log(wid, hei, rad);
            return `${wid},${hei},${rad}`
     }
 

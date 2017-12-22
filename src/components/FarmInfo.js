@@ -13,7 +13,7 @@ export default class FarmInfo extends React.Component {
                         </tr>
                         <tr>
                             <td>Cost: {this.props.farmCost}</td>
-                            <td>Cookies production: {this.props.farmAmount * cnt.cpsMultiplier.farm}/s</td>                
+                            <td>Cookies production: {this.props.farmAmount * Math.round(cnt.cpsMultiplier.farm*100)/100}/s</td>                
                         </tr>
                     </tbody>
                 </table>            

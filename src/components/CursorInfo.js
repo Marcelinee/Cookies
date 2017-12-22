@@ -13,7 +13,7 @@ export default class CursorInfo extends React.Component {
                         </tr>
                         <tr>
                             <td>Cost: {this.props.cursorCost}</td>
-                            <td>Cookies production: {this.props.cursorAmount * cnt.cpsMultiplier.cursor}/s</td>                
+                            <td>Cookies production: {this.props.cursorAmount * Math.round(cnt.cpsMultiplier.cursor*100)/100}/s</td>                
                         </tr>
                     </tbody>
                 </table>            

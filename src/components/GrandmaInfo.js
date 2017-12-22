@@ -13,7 +13,7 @@ export default class GrandmaInfo extends React.Component {
                         </tr>
                         <tr>
                             <td>Cost: {this.props.grandmaCost}</td>
-                            <td>Cookies production: {this.props.grandmaAmount * cnt.cpsMultiplier.grandma}/s</td>                
+                            <td>Cookies production: {this.props.grandmaAmount * Math.round(cnt.cpsMultiplier.grandma*100)/100}/s</td>                
                         </tr>
                     </tbody>
                 </table>            

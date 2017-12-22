@@ -13,7 +13,7 @@ export default class MineInfo extends React.Component {
                         </tr>
                         <tr>
                             <td>Cost: {this.props.mineCost}</td>
-                            <td>Cookies production: {this.props.mineAmount * cnt.cpsMultiplier.mine}/s</td>                
+                            <td>Cookies production: {this.props.mineAmount * Math.round(cnt.cpsMultiplier.mine*100)/100}/s</td>                
                         </tr>
                     </tbody>
                 </table>            

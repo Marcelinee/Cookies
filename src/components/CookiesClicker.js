@@ -71,19 +71,19 @@ export default class CookiesClicker extends React.Component {
 
     //Update cookies per second   
     updateCookiesCPS() {
-        this.setState(() => {return {perSecond: (this.state.cursorAmount * cnt.cpsMultiplier.cursor + this.state.grandmaAmount * cnt.cpsMultiplier.grandma
+        this.setState(() => {return {perSecond: Math.round((this.state.cursorAmount * cnt.cpsMultiplier.cursor + this.state.grandmaAmount * cnt.cpsMultiplier.grandma
                                                 + this.state.factoryAmount * cnt.cpsMultiplier.factory  + this.state.mineAmount * cnt.cpsMultiplier.mine 
-                                                + this.state.farmAmount * cnt.cpsMultiplier.farm)}});
+                                                + this.state.farmAmount * cnt.cpsMultiplier.farm)*100)/100}});
     }
 
     //Update costs for all producers
     updateProducersCost() { 
-        this.setState(() =>  {console.log(this.state); return { 
-        cursorCost: Math.round(Math.exp(this.state.cursorAmount) * cnt.costMultiplier.cursor),
-        grandmaCost: Math.round(Math.exp(this.state.grandmaAmount) * cnt.costMultiplier.grandma),
-        factoryCost: Math.round(Math.exp(this.state.factoryAmount) * cnt.costMultiplier.factory),
-        mineCost: Math.round(Math.exp(this.state.mineAmount) * cnt.costMultiplier.mine),
-        farmCost: Math.round(Math.exp(this.state.farmAmount) * cnt.costMultiplier.farm)}})
+        this.setState(() =>  {return { 
+        cursorCost: Math.round(Math.pow(1.15, this.state.cursorAmount) * cnt.costMultiplier.cursor),
+        grandmaCost: Math.round(Math.pow(1.15, this.state.grandmaAmount) * cnt.costMultiplier.grandma),
+        factoryCost: Math.round(Math.pow(1.15, this.state.factoryAmount) * cnt.costMultiplier.factory),
+        mineCost: Math.round(Math.pow(1.15, this.state.mineAmount) * cnt.costMultiplier.mine),
+        farmCost: Math.round(Math.pow(1.15, this.state.farmAmount) * cnt.costMultiplier.farm)}})
     }
 
     //Cookie click cookie adder
@@ -95,7 +95,7 @@ export default class CookiesClicker extends React.Component {
     buyProducers(producer) {
         this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 
                                      amount: prevState.amount - prevState[producer + "Cost"], 
-                                     [producer + "Cost"]: Math.round(Math.exp(prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])};},
+                                     [producer + "Cost"]: Math.round(Math.pow(1.15, prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])};},
             function() {
                 this.updateCookiesCPS(); 
                 updateProducersDatabase("producers", this.state.cursorAmount, this.state.grandmaAmount, this.state.factoryAmount, this.state.mineAmount, 
