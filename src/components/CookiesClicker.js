@@ -50,23 +50,23 @@ export default class CookiesClicker extends React.Component {
                 cookiesRestore = cookies;
                 that.setState({amount: cookiesRestore.amount});
             })
-        }, 50);
+        }, 200);
     
         setTimeout(function() {
             restoreProducersDatabase(function(producers) {
             producersRestore = producers;
                 that.setState({cursorAmount: producersRestore.cursorAmount,
                             grandmaAmount: producersRestore.grandmaAmount,
-                            factoryAmount: producersRestore.factoryAmount,
                             mineAmount: producersRestore.mineAmount,
-                            farmAmount: producersRestore.farmAmount});
+                            farmAmount: producersRestore.farmAmount,
+                            factoryAmount: producersRestore.factoryAmount});
                 that.updateCookiesCPS(); that.updateProducersCost();
             });
 
-        }, 100);
+        }, 400);
         //Update database (cookies and producers)    
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
-        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount), 2000);
+        this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount), 1000);
         }
 
     //Update cookies per second   
@@ -81,9 +81,9 @@ export default class CookiesClicker extends React.Component {
         this.setState(() =>  {return { 
         cursorCost: Math.round(Math.pow(1.15, this.state.cursorAmount) * cnt.costMultiplier.cursor),
         grandmaCost: Math.round(Math.pow(1.15, this.state.grandmaAmount) * cnt.costMultiplier.grandma),
-        factoryCost: Math.round(Math.pow(1.15, this.state.factoryAmount) * cnt.costMultiplier.factory),
+        farmCost: Math.round(Math.pow(1.15, this.state.farmAmount) * cnt.costMultiplier.farm),
         mineCost: Math.round(Math.pow(1.15, this.state.mineAmount) * cnt.costMultiplier.mine),
-        farmCost: Math.round(Math.pow(1.15, this.state.farmAmount) * cnt.costMultiplier.farm)}})
+        factoryCost: Math.round(Math.pow(1.15, this.state.factoryAmount) * cnt.costMultiplier.factory)}})
     }
 
     //Cookie click cookie adder

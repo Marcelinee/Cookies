@@ -10,7 +10,7 @@ else {
 }
 
 if (dbSupported) {
-    var dbOpen= indexedDB.open("CookieDB", 6);
+    var dbOpen= indexedDB.open("CookieDB", 2);
     //DB upgrading
     dbOpen.onupgradeneeded = function(e) {
         var thisDB = this.result;
