@@ -62,12 +62,12 @@ export default class CookiesClicker extends React.Component {
                             factoryAmount: producersRestore.factoryAmount});
                 that.updateCookiesCPS(); that.updateProducersCost();
             });
-
         }, 400);
         //Update database (cookies and producers)    
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount), 1000);
         }
+
 
     //Update cookies per second   
     updateCookiesCPS() {

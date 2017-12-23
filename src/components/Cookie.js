@@ -10,6 +10,10 @@ export default class Cookie extends React.Component {
         }
     }
 
+    addPlus() {
+        const plus = <div>+1</div>;
+    }
+
     clickCookie() {
         let cookieImg = document.getElementById("cookieImg");
         cookieImg.style.transform = "scale(0.95,0.95)";
@@ -41,7 +45,7 @@ export default class Cookie extends React.Component {
                     <div className= "cookieDiv">
                         <img id="cookieImg" src={(this.props.cookiesAmount === 0) ? "images/cookie0.png" : "images/cookie.png"} className="cookieImg" useMap="#cookieMap"/>
                             <map name="cookieMap">
-                                <area shape="circle"  coords={this.state.coords} onClick={() => {this.props.addCookies(), this.clickCookie()}} className="click"/>
+                                <area shape="circle"  coords={this.state.coords} onClick={() => {this.props.addCookies(), this.clickCookie(), this.addPlus()}} className="click"/>
                             </map>
                     </div>
                     
