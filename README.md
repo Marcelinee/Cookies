@@ -19,5 +19,6 @@ Click here to play: https://marcelinee.github.io/Cookies/public/index.html
 + Displaying cookies per second parameter;
 + All needed data is stored in IndexedDB;
 
-Tested on: Chrome, IE, Edge, Firefox, Vivaldi on OS Win10. In case of trouble hit F5!
+Tested on: Chrome, IE, Edge, Firefox, Vivaldi on OS Win10. In case of trouble hit F5! 
+
 Found single problem with creating database in Firefox on Ubuntu Linux. 
