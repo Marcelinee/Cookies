@@ -1,4 +1,4 @@
-var db;
+
 var dbSupported = false;
 import * as cnt from "../components/constants.js"
 //Check if IndexedDB is supported in browser
@@ -8,9 +8,10 @@ if (!window.indexedDB) {
 else {
     dbSupported = true;
 }
+var db;
+var dbOpen= indexedDB.open("CookieDB", 2);
 
-if (dbSupported) {
-    var dbOpen= indexedDB.open("CookieDB", 2);
+function cookieCreate() {
     //DB upgrading
     dbOpen.onupgradeneeded = function(e) {
         var thisDB = this.result;
@@ -34,10 +35,10 @@ if (dbSupported) {
                 
                 var addRequest = store.add(cookies);
                         addRequest.onerror = function(e) {
-                            //console.log("Cookies not added");
+                            console.log("Cookies not added");
                         }
                         addRequest.onsuccess = function(e) {
-                            //console.log("Cookies added");
+                            console.log("Cookies added");
                         }
             }
         }
@@ -64,13 +65,12 @@ if (dbSupported) {
                 }
             }
         }
-
+        console.log("bla")
     }
     dbOpen.onerror = function(e) {
-        //console.log("Error");
     }
-}
 
+}
 function requestDB(dbName, type) {
     db = dbOpen.result;
     var transaction = db.transaction([dbName], type);
@@ -143,4 +143,4 @@ function restoreProducersDatabase(callback) {
      }
 }
 
-export {restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase}
+export {cookieCreate, restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase}

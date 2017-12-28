@@ -1,4 +1,6 @@
 
+const producersTable = ["cursor", "grandma", "farm", "mine", "factory"];
+
 const cpsMultiplier = {
         cursor: 0.1,
         grandma: 1,
@@ -14,4 +16,4 @@ const costMultiplier = {
     factory: 130000
 }   
 
-   export {cpsMultiplier, costMultiplier}
+   export {cpsMultiplier, costMultiplier, producersTable}

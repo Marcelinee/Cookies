@@ -14,7 +14,7 @@ import MineInfo from "./MineInfo"
 import Farm from "./Farm";
 import FarmInfo from "./FarmInfo";
 
-import {restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase} from "../scripts/cookies.js"
+import {cookieCreate, restoreCookiesDatabase, restoreProducersDatabase, updateCookiesDatabase, updateProducersDatabase} from "../scripts/cookies.js"
 import * as cnt from "./constants.js"
 
 export default class CookiesClicker extends React.Component {
@@ -24,6 +24,7 @@ export default class CookiesClicker extends React.Component {
         this.buyProducers = this.buyProducers.bind(this);
         this.addCookies = this.addCookies.bind(this);
         this.updateProducersCost = this.updateProducersCost.bind(this);
+        this.checkProducers = this.checkProducers.bind(this);
         this.state = {
                 amount: 0,
                 perSecond : 0, 
@@ -44,13 +45,15 @@ export default class CookiesClicker extends React.Component {
     componentDidMount() {
         var that = this; 
         var cookiesRestore, producersRestore;
-
+        cookieCreate();
         setTimeout(function() {
             restoreCookiesDatabase(function(cookies) {
                 cookiesRestore = cookies;
-                that.setState({amount: cookiesRestore.amount});
+                if (isNaN(cookiesRestore.amount)){that.setState({amount: 0});}
+                else {that.setState({amount: cookiesRestore.amount});}
+                console.log("cookie");
             })
-        }, 200);
+        }, 200);    
     
         setTimeout(function() {
             restoreProducersDatabase(function(producers) {
@@ -60,8 +63,10 @@ export default class CookiesClicker extends React.Component {
                             mineAmount: producersRestore.mineAmount,
                             farmAmount: producersRestore.farmAmount,
                             factoryAmount: producersRestore.factoryAmount});
-                that.updateCookiesCPS(); that.updateProducersCost();
-            });
+                that.updateCookiesCPS(); that.updateProducersCost(); 
+                if ((that.state.cursorCost || that.state.grandmaCost || that.state.factoryCost || that.state.mineCost || that.state.factoryCost) === 0)
+                {that.updateProducersCost();}; that.checkProducers(); //For safety
+            });                console.log("producers");
         }, 400);
         //Update database (cookies and producers)    
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
@@ -74,6 +79,17 @@ export default class CookiesClicker extends React.Component {
         this.setState(() => {return {perSecond: Math.round((this.state.cursorAmount * cnt.cpsMultiplier.cursor + this.state.grandmaAmount * cnt.cpsMultiplier.grandma
                                                 + this.state.factoryAmount * cnt.cpsMultiplier.factory  + this.state.mineAmount * cnt.cpsMultiplier.mine 
                                                 + this.state.farmAmount * cnt.cpsMultiplier.farm)*100)/100}});
+    }
+
+    checkProducers() {
+        for (let i=0; i< cnt.producersTable.length; i++)
+        {
+            if(isNaN(this.state[cnt.producersTable[i] + "Amount"])) {this.setState({[cnt.producersTable[i] + "Amount"]: 0});}
+        }
+        for (let i=0; i< cnt.producersTable.length; i++)
+        {
+            if(isNaN(this.state[cnt.producersTable[i] + "Cost"])) {this.updateProducersCost();}
+        }
     }
 
     //Update costs for all producers
@@ -95,7 +111,7 @@ export default class CookiesClicker extends React.Component {
     buyProducers(producer) {
         this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 
                                      amount: prevState.amount - prevState[producer + "Cost"], 
-                                     [producer + "Cost"]: Math.round(Math.pow(1.15, prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])};},
+                                     [producer + "Cost"]: Math.round(Math.pow(1.15, prevState[producer + "Amount"]) * cnt.costMultiplier[producer])};},
             function() {
                 this.updateCookiesCPS(); 
                 updateProducersDatabase("producers", this.state.cursorAmount, this.state.grandmaAmount, this.state.factoryAmount, this.state.mineAmount, 
