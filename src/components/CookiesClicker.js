@@ -51,7 +51,6 @@ export default class CookiesClicker extends React.Component {
                 cookiesRestore = cookies;
                 if (isNaN(cookiesRestore.amount)){that.setState({amount: 0});}
                 else {that.setState({amount: cookiesRestore.amount});}
-                console.log("cookie");
             })
         }, 200);    
     
@@ -63,11 +62,12 @@ export default class CookiesClicker extends React.Component {
                             mineAmount: producersRestore.mineAmount,
                             farmAmount: producersRestore.farmAmount,
                             factoryAmount: producersRestore.factoryAmount});
-                that.updateCookiesCPS(); that.updateProducersCost(); 
+                that.updateCookiesCPS(); that.updateProducersCost(); that.checkProducers();
                 if ((that.state.cursorCost || that.state.grandmaCost || that.state.factoryCost || that.state.mineCost || that.state.factoryCost) === 0)
-                {that.updateProducersCost();}; that.checkProducers(); //For safety
-            });                console.log("producers");
+                {that.updateProducersCost();};  //For safety
+            });
         }, 400);
+        
         //Update database (cookies and producers)    
         this.intervalTim = (setInterval(() => this.setState((prevState) =>  {return {amount: (prevState.amount + (this.state.perSecond/10))}}), 100));                                               
         this.intervalCookies = setInterval(() => updateCookiesDatabase("cookies", this.state.amount), 1000);
@@ -94,7 +94,7 @@ export default class CookiesClicker extends React.Component {
 
     //Update costs for all producers
     updateProducersCost() { 
-        this.setState(() =>  {return { 
+        this.setState(() =>  { return { 
         cursorCost: Math.round(Math.pow(1.15, this.state.cursorAmount) * cnt.costMultiplier.cursor),
         grandmaCost: Math.round(Math.pow(1.15, this.state.grandmaAmount) * cnt.costMultiplier.grandma),
         farmCost: Math.round(Math.pow(1.15, this.state.farmAmount) * cnt.costMultiplier.farm),
@@ -109,9 +109,10 @@ export default class CookiesClicker extends React.Component {
     
     //Buy producer -> update amount & cost -> update CPS -> update database
     buyProducers(producer) {
-        this.setState((prevState) => {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 
+        this.setState((prevState) =>  {return {[producer + "Amount"]: prevState[producer + "Amount"] + 1, 
                                      amount: prevState.amount - prevState[producer + "Cost"], 
-                                     [producer + "Cost"]: Math.round(Math.pow(1.15, prevState[producer + "Amount"]) * cnt.costMultiplier[producer])};},
+                                     [producer + "Cost"]: Math.round(Math.pow(1.15, prevState[producer + "Amount"] + 1) * cnt.costMultiplier[producer])}
+                                     ;},
             function() {
                 this.updateCookiesCPS(); 
                 updateProducersDatabase("producers", this.state.cursorAmount, this.state.grandmaAmount, this.state.factoryAmount, this.state.mineAmount, 

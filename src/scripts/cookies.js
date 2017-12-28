@@ -35,10 +35,10 @@ function cookieCreate() {
                 
                 var addRequest = store.add(cookies);
                         addRequest.onerror = function(e) {
-                            console.log("Cookies not added");
+                            //console.log("Cookies not added");
                         }
                         addRequest.onsuccess = function(e) {
-                            console.log("Cookies added");
+                            //console.log("Cookies added");
                         }
             }
         }
@@ -65,7 +65,6 @@ function cookieCreate() {
                 }
             }
         }
-        console.log("bla")
     }
     dbOpen.onerror = function(e) {
     }
